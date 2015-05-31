@@ -16,15 +16,6 @@
                     <view key="view" contentMode="scaleToFill" id="N6k-lV-S63">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <searchBar contentMode="redraw" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zsG-w1-U44">
-                                <rect key="frame" x="0.0" y="20" width="320" height="44"/>
-                                <textInputTraits key="textInputTraits"/>
-                                <connections>
-                                    <outlet property="delegate" destination="jqE-pP-bZx" id="S7Q-pu-3f4"/>
-                                </connections>
-                            </searchBar>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="9Z2-n8-x37"/>
@@ -34,7 +25,18 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GAk-tb-Hx2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <searchBar contentMode="redraw" id="zsG-w1-U44">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <textInputTraits key="textInputTraits"/>
+                    <connections>
+                        <outlet property="delegate" destination="jqE-pP-bZx" id="S7Q-pu-3f4"/>
+                    </connections>
+                </searchBar>
                 <searchDisplayController id="GBq-fh-roI">
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="displaysSearchBarInNavigationBar" value="YES"/>
+                    </userDefinedRuntimeAttributes>
                     <connections>
                         <outlet property="delegate" destination="jqE-pP-bZx" id="ai3-iQ-nfb"/>
                         <outlet property="searchBar" destination="zsG-w1-U44" id="AfX-ad-4Jw"/>

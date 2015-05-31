@@ -17,39 +17,34 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    // Indicate that whether those dynamic added labels are existed.
     _bLabelsInserted = false;
-
-    self.searchDisplayController.displaysSearchBarInNavigationBar = YES;
 
     // Change bgcolor of SearchBar's TextField.
     UITextField *sbTextField = [_searchBar valueForKey:@"_searchField"];
     sbTextField.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
 }
 
-- (void)viewDidLayoutSubviews {
-    [super viewDidLayoutSubviews];
-    // Check whether labels did insert into view, ensure that view added label
-    // views one time to prevent memory leaking.
+- (void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
+
     if (!_bLabelsInserted) {
-        [self hotSearchWordsLabelDidLoad];
+        [self hotSearchWordsLabelDidInsert];
         _bLabelsInserted = true;
     }
-    [self.view layoutSubviews];
 }
 
-- (void)hotSearchWordsLabelDidLoad {
-//    NSArray *words = @[@"追风筝的人", @"Python", @"摩托车修理店的未来工作哲学", @"左耳", @"盗墓笔记",
-//                       @"平凡的世界", @"乌合之众", @"百年孤独", @"深入理解C++", @"面试宝典"];
-    NSArray *words = @[@"追风筝的人", @"Python", @"摩托车修理店的未来工作哲学", @"左耳", @"盗墓笔记"];
+- (void)hotSearchWordsLabelDidInsert {
+    NSArray *words = @[@"追风筝的人", @"Python", @"摩托车修理店的未来工作哲学", @"左耳", @"盗墓笔记",
+                       @"平凡的世界", @"乌合之众", @"百年孤独", @"深入理解C++", @"面试宝典"];
 
-    int num;
+    int word_displayed_num;
     if ([[UIScreen mainScreen] bounds].size.height >= 568) {
         // >= 4-inch screen (iPhone 5/5S, 6/6+)
-        num = 10;
+        word_displayed_num = 10;
     } else {
-        // 4.5-inch screen (iPhone 4S)
-        num = 8;
+        // 3.5-inch screen (iPhone 4S)
+        word_displayed_num = 8;
     }
 
     UILabel *headerLabel = [UILabel new];
@@ -73,12 +68,11 @@
                              attribute:NSLayoutAttributeBottom
                              multiplier:1.0
                               constant:30]];
-    [headerLabel layoutIfNeeded];
 
     // hot word label's height, and gap between two adjacent labels
     float h = 21, gap = 13.5;
 
-    for (int i = 0; i < [words count] && i < num; i++) {
+    for (int i = 0; i < [words count] && i < word_displayed_num; i++) {
         UILabel *label = [UILabel new];
         label.text = words[i];
         label.textColor = [UIColor colorWithRed:52.0/255 green:152.0/255 blue:240.0/255 alpha:1];
@@ -101,7 +95,6 @@
                                       attribute:NSLayoutAttributeBottom
                                       multiplier:1.0
                                       constant:(i + 1) * h + i * gap + 24]];
-        [label layoutIfNeeded];
 
         // Capture label tap event.
         label.userInteractionEnabled = true;

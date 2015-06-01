@@ -25,3 +25,5 @@ DerivedData
 #
 Pods/
 
+#
+_clang-format

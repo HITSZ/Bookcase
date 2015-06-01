@@ -7,10 +7,9 @@
 //
 
 #import "SearchViewController.h"
+#import "LibraryService.h"
 
 #import "SVProgressHUD.h"
-#import "AFNetworking.h"
-#import "RXMLElement.h"
 
 @interface SearchViewController () <UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate>
 @property(weak, nonatomic) IBOutlet UISearchBar *searchBar;
@@ -32,49 +31,17 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
 
-    if (_bLabelsInserted) {
-        return;
+    if (!_bLabelsInserted) {
+        [LibraryService getHotSearchWordsByIndex:@"all"
+                                         success:^(NSArray *hotWords) {
+                                             [self hotSearchWordsLabelDidInsert:hotWords];
+                                             _bLabelsInserted = true;
+                                         }];
     }
-
-    // To get hot search words via http service.
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-    [manager GET:@"http://219.223.211.171/Search/gethotword.jsp?v_index=all"
-      parameters:nil
-         success:^(AFHTTPRequestOperation *operation, id responseObject) {
-             NSString *wrappedResponse =
-             [NSString stringWithFormat:@"<resp>%@</resp>",
-              [[NSString alloc] initWithData:responseObject encoding:4]];
-             RXMLElement *rootXML = [RXMLElement elementFromXMLString:wrappedResponse encoding:4];
-             NSMutableArray *hotWords = [NSMutableArray new];
-             [rootXML iterate:@"a"
-                   usingBlock:^(RXMLElement *anchor) {
-                       [hotWords
-                        addObject:[anchor.text stringByTrimmingCharactersInSet:
-                                   [NSCharacterSet whitespaceAndNewlineCharacterSet]]];
-                   }];
-             [self hotSearchWordsLabelDidInsert:[hotWords copy]];
-             _bLabelsInserted = true;
-         }
-         failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-             NSLog(@"Error: %@", error);
-         }];
 }
 
+#pragma mark - HotWordsAcquire
 - (void)hotSearchWordsLabelDidInsert:(NSArray *)hotWords {
-    //    NSArray *hotWords = @[
-    //                       @"追风筝的人",
-    //                       @"Python",
-    //                       @"摩托车修理店的未来工作哲学",
-    //                       @"左耳",
-    //                       @"盗墓笔记",
-    //                       @"平凡的世界",
-    //                       @"乌合之众",
-    //                       @"百年孤独",
-    //                       @"深入理解C++",
-    //                       @"面试宝典"
-    //                       ];
-
     int word_displayed_num;
     if ([[UIScreen mainScreen] bounds].size.height >= 568) {
         // >= 4-inch screen (iPhone 5/5S, 6/6+)
@@ -148,11 +115,6 @@
     UILabel *touchedLabel = (UILabel *)sender.view;
     _searchBar.text = [touchedLabel text];
     [_searchBar becomeFirstResponder];
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - UISearchBarDelegate

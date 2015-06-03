@@ -12,7 +12,8 @@
 
 #import "SVProgressHUD.h"
 
-@interface SearchViewController () <UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
+@interface SearchViewController () <UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate,
+UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UIView* hotSearchView;
 @property (weak, nonatomic) IBOutlet UITableView* tableView;
 @property (weak, nonatomic) IBOutlet UISearchBar* searchBar;
@@ -196,9 +197,11 @@ shouldReloadTableForSearchString:(NSString*)searchString
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     if (tableView == self.searchDisplayController.searchResultsTableView) {
-        UITableViewCell* cell = [self.searchDisplayController.searchResultsTableView dequeueReusableCellWithIdentifier:@"kCandidateListCell"];
+        UITableViewCell* cell = [self.searchDisplayController.searchResultsTableView
+                                 dequeueReusableCellWithIdentifier:@"kCandidateListCell"];
         if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"kCandidateListCell"];
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+                                          reuseIdentifier:@"kCandidateListCell"];
         }
         cell.textLabel.text = [_kCandidates objectAtIndex:indexPath.row];
         return cell;
@@ -214,7 +217,7 @@ shouldReloadTableForSearchString:(NSString*)searchString
     }
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
     if (tableView == self.searchDisplayController.searchResultsTableView) {
         [_searchBar setText:[tableView cellForRowAtIndexPath:indexPath].textLabel.text];

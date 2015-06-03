@@ -13,31 +13,22 @@
 
 @interface SearchViewController () <UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate>
 @property(weak, nonatomic) IBOutlet UISearchBar *searchBar;
-@property BOOL bLabelsInserted;
+
 @end
 
 @implementation SearchViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Indicate that whether those dynamic added labels are existed.
-    _bLabelsInserted = false;
 
     // Change bgcolor of SearchBar's TextField.
     UITextField *sbTextField = [_searchBar valueForKey:@"_searchField"];
     sbTextField.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
-}
 
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-
-    if (!_bLabelsInserted) {
-        [LibraryService getHotSearchWordsByIndex:@"all"
-                                         success:^(NSArray *hotWords) {
-                                             [self hotSearchWordsLabelDidInsert:hotWords];
-                                             _bLabelsInserted = true;
-                                         }];
-    }
+    [LibraryService getHotSearchWordsByIndex:@"all"
+                                     success:^(NSArray *hotWords) {
+                                         [self hotSearchWordsLabelDidInsert:hotWords];
+                                     }];
 }
 
 #pragma mark - HotWordsAcquire
@@ -105,9 +96,8 @@
 
         // Capture label tap event.
         label.userInteractionEnabled = true;
-        [label addGestureRecognizer:[[UITapGestureRecognizer alloc]
-                                     initWithTarget:self
-                                     action:@selector(hotSearchWordLabelDidTap:)]];
+        [label addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                            action:@selector(hotSearchWordLabelDidTap:)]];
     }
 }
 

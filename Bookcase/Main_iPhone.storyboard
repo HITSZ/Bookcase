@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Search View Controller-->
@@ -16,12 +17,80 @@
                     <view key="view" contentMode="scaleToFill" id="N6k-lV-S63">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IwM-0x-OU1">
+                                <rect key="frame" x="0.0" y="64" width="320" height="455"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="70" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="JuR-qG-EMP">
+                                <rect key="frame" x="0.0" y="64" width="320" height="455"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="bookListCell" rowHeight="70" id="zuN-2L-lSu" userLabel="bookListCell" customClass="BookListTableViewCell">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zuN-2L-lSu" id="TYF-3Y-8PC">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="平凡的世界 . 第一部/ 路遥著" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sQF-bH-PaU" userLabel="titleLabel">
+                                                    <rect key="frame" x="8" y="8" width="271" height="21"/>
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="作 者：路遥" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kgm-7L-DK1" userLabel="authorLabel">
+                                                    <rect key="frame" x="10" y="32" width="269" height="15"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="出版者：北京;北京十月文艺出版社:2012" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8dp-Te-Lr5" userLabel="publisherLabel">
+                                                    <rect key="frame" x="10" y="49" width="269" height="15"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="8dp-Te-Lr5" firstAttribute="trailing" secondItem="sQF-bH-PaU" secondAttribute="trailing" id="1Tg-Rc-XSl"/>
+                                                <constraint firstItem="sQF-bH-PaU" firstAttribute="top" secondItem="TYF-3Y-8PC" secondAttribute="topMargin" id="5sG-qK-fH0"/>
+                                                <constraint firstItem="kgm-7L-DK1" firstAttribute="leading" secondItem="TYF-3Y-8PC" secondAttribute="leadingMargin" constant="2" id="A9l-Yc-gam"/>
+                                                <constraint firstItem="8dp-Te-Lr5" firstAttribute="top" secondItem="kgm-7L-DK1" secondAttribute="bottom" constant="2" id="JNM-aB-MSZ"/>
+                                                <constraint firstItem="kgm-7L-DK1" firstAttribute="top" secondItem="sQF-bH-PaU" secondAttribute="bottom" constant="3" id="K4K-Pq-lW8"/>
+                                                <constraint firstItem="sQF-bH-PaU" firstAttribute="leading" secondItem="TYF-3Y-8PC" secondAttribute="leadingMargin" id="MPQ-ox-w6w"/>
+                                                <constraint firstItem="kgm-7L-DK1" firstAttribute="trailing" secondItem="TYF-3Y-8PC" secondAttribute="trailingMargin" id="ehI-yI-esS"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="sQF-bH-PaU" secondAttribute="trailing" id="vZ9-lb-aeN"/>
+                                                <constraint firstItem="8dp-Te-Lr5" firstAttribute="leading" secondItem="kgm-7L-DK1" secondAttribute="leading" id="xCC-dV-c0f"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="authorLabel" destination="kgm-7L-DK1" id="8ZK-F5-hSl"/>
+                                            <outlet property="publisherLabel" destination="8dp-Te-Lr5" id="NP7-He-0QO"/>
+                                            <outlet property="titleLabel" destination="sQF-bH-PaU" id="Igt-QP-syf"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <sections/>
+                                <connections>
+                                    <outlet property="dataSource" destination="jqE-pP-bZx" id="sTW-3W-Dsx"/>
+                                    <outlet property="delegate" destination="jqE-pP-bZx" id="jZb-u3-a29"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="IwM-0x-OU1" firstAttribute="leading" secondItem="N6k-lV-S63" secondAttribute="leading" id="EAU-ui-wPG"/>
+                            <constraint firstItem="IwM-0x-OU1" firstAttribute="top" secondItem="Nkg-jw-O9L" secondAttribute="bottom" id="gof-5p-L39"/>
+                            <constraint firstItem="mtY-DF-Ou5" firstAttribute="top" secondItem="IwM-0x-OU1" secondAttribute="bottom" id="js1-tI-Y7W"/>
+                            <constraint firstAttribute="trailing" secondItem="IwM-0x-OU1" secondAttribute="trailing" id="t8z-qN-tiF"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="9Z2-n8-x37"/>
                     <connections>
+                        <outlet property="hotSearchView" destination="IwM-0x-OU1" id="8Pm-iY-Blg"/>
                         <outlet property="searchBar" destination="zsG-w1-U44" id="Ill-Rl-a2u"/>
                         <outlet property="searchDisplayController" destination="GBq-fh-roI" id="38H-d6-2pv"/>
+                        <outlet property="tableView" destination="JuR-qG-EMP" id="uaq-Gq-Zca"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GAk-tb-Hx2" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -51,6 +120,7 @@
         <!--View Controller-->
         <scene sceneID="HfQ-yk-Jvd">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9G6-py-Wye" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="ylJ-8k-Qib" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="gaz-RB-huk"/>
@@ -63,7 +133,6 @@
                     </view>
                     <navigationItem key="navigationItem" id="bg2-3t-ILt"/>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="9G6-py-Wye" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1143" y="950"/>
         </scene>

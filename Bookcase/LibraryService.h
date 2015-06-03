@@ -10,6 +10,15 @@
 
 @interface LibraryService : NSObject
 
-+ (BOOL)getHotSearchWordsByIndex:(NSString *)index success:(void (^)(NSArray *))success;
++ (void)getHotSearchWordsByIndex:(NSString *)index success:(void (^)(NSArray *))success;
++ (void)searchBookByIndex:(NSString *)index
+                  withKey:(NSString *)key
+                  success:(void (^)(NSArray *))success
+                  failure:(void (^)(void))failure;
+
++ (void)getSearchWordCandidatesByIndex:(NSString *)index
+                               withKey:(NSString *)key
+                               success:(void (^)(NSArray *))success
+                               failure:(void (^)(void))failure;
 
 @end

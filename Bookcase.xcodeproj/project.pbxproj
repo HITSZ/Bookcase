@@ -16,6 +16,7 @@
 		7452427A1B10CF14005BE8CD /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 745242791B10CF14005BE8CD /* Images.xcassets */; };
 		7452427D1B10CF14005BE8CD /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7452427B1B10CF14005BE8CD /* LaunchScreen.xib */; };
 		745242891B10CF14005BE8CD /* BookcaseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 745242881B10CF14005BE8CD /* BookcaseTests.m */; };
+		745FD21B1B1F215C00DBC5CC /* BookListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 745FD21A1B1F215C00DBC5CC /* BookListTableViewCell.m */; };
 		7478E0EE1B178831004DA433 /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7478E0ED1B178831004DA433 /* Main_iPhone.storyboard */; };
 /* End PBXBuildFile section */
 
@@ -47,6 +48,8 @@
 		745242821B10CF14005BE8CD /* BookcaseTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BookcaseTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		745242871B10CF14005BE8CD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		745242881B10CF14005BE8CD /* BookcaseTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BookcaseTests.m; sourceTree = "<group>"; };
+		745FD2191B1F215C00DBC5CC /* BookListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BookListTableViewCell.h; sourceTree = "<group>"; };
+		745FD21A1B1F215C00DBC5CC /* BookListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BookListTableViewCell.m; sourceTree = "<group>"; };
 		7478E0ED1B178831004DA433 /* Main_iPhone.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main_iPhone.storyboard; sourceTree = "<group>"; };
 		8C31D7FCEB99DE50E1E6E0E5 /* Pods-Bookcase.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bookcase.release.xcconfig"; path = "Pods/Target Support Files/Pods-Bookcase/Pods-Bookcase.release.xcconfig"; sourceTree = "<group>"; };
 		CB603918AADC20E65F1E56F3 /* libPods-Bookcase.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Bookcase.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -100,12 +103,14 @@
 				745242711B10CF14005BE8CD /* SearchViewController.m */,
 				745242731B10CF14005BE8CD /* SecondViewController.h */,
 				745242741B10CF14005BE8CD /* SecondViewController.m */,
+				7450DEBD1B1CB7B300994915 /* LibraryService.h */,
+				7450DEBE1B1CB7B300994915 /* LibraryService.m */,
+				745FD2191B1F215C00DBC5CC /* BookListTableViewCell.h */,
+				745FD21A1B1F215C00DBC5CC /* BookListTableViewCell.m */,
 				7478E0ED1B178831004DA433 /* Main_iPhone.storyboard */,
 				745242791B10CF14005BE8CD /* Images.xcassets */,
 				7452427B1B10CF14005BE8CD /* LaunchScreen.xib */,
 				745242691B10CF14005BE8CD /* Supporting Files */,
-				7450DEBD1B1CB7B300994915 /* LibraryService.h */,
-				7450DEBE1B1CB7B300994915 /* LibraryService.m */,
 			);
 			path = Bookcase;
 			sourceTree = "<group>";
@@ -289,6 +294,7 @@
 			files = (
 				745242751B10CF14005BE8CD /* SecondViewController.m in Sources */,
 				7452426F1B10CF14005BE8CD /* AppDelegate.m in Sources */,
+				745FD21B1B1F215C00DBC5CC /* BookListTableViewCell.m in Sources */,
 				745242721B10CF14005BE8CD /* SearchViewController.m in Sources */,
 				7450DEBF1B1CB7B300994915 /* LibraryService.m in Sources */,
 				7452426C1B10CF14005BE8CD /* main.m in Sources */,

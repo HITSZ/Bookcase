@@ -165,6 +165,14 @@
                 success:(void (^)(AFHTTPRequestOperation* operation, id responseObject))success
                 failure:(void (^)(AFHTTPRequestOperation* operation, NSError* error))failure
 {
+    // 过滤v_value中的关键词，根据网页中js代码得知
+    NSMutableDictionary* paras = [parameters mutableCopy];
+    NSString* v_value = [paras objectForKey:@"v_value"];
+    if (v_value) {
+        [paras setObject:[self filterString:v_value] forKey:@"v_value"];
+    }
+    parameters = [paras copy];
+
     AFHTTPRequestOperationManager* manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     method = [method lowercaseString];
@@ -190,6 +198,43 @@
                  NSLog(@"\n----GET----\n%s\n%@\n%@\n-----------", __func__, parameters, error);
              }];
     }
+}
+
++ (NSString*)filterString:(NSString*)origin
+{
+    NSArray* filterWords = @[
+                             @"'",
+                             @"\"",
+                             @"\\\'",
+                             @"\\\"",
+                             @"\\)",
+                             @"\\*",
+                             @";",
+                             @"<",
+                             @">",
+                             @"%",
+                             @"\\(",
+                             @"\\|",
+                             @"&",
+                             @"\\+",
+                             @"$",
+                             @"@",
+                             @"\r",
+                             @"\n",
+                             @",",
+                             @"select ",
+                             @" and ",
+                             @" in ",
+                             @" or ",
+                             @"insert ",
+                             @"delete ",
+                             @"update ",
+                             @"drop "
+                             ];
+    for (NSString* word in filterWords) {
+        origin = [origin stringByReplacingOccurrencesOfString:word withString:@" "];
+    }
+    return origin;
 }
 
 @end

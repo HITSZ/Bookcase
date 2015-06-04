@@ -118,10 +118,10 @@
                                                       }];
                        }];
                       success([searchResults copy]);
-                      NSLog(@"%@", searchResults);
+//                      NSLog(@"%@", searchResults);
                   }
                   failure:^(AFHTTPRequestOperation* operation, NSError* error){
-
+                      failure();
                   }];
     [self sendSearchWordByIndex:index withKey:key];
 }

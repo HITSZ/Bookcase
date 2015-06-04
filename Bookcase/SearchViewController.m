@@ -146,6 +146,7 @@ UITextFieldDelegate>
 - (BOOL)searchDisplayController:(UISearchDisplayController*)controller
 shouldReloadTableForSearchString:(NSString*)searchString
 {
+    NSLog(@"%s%@", __func__, searchString);
     [LibraryService getSearchWordCandidatesByIndex:@"all"
                                            withKey:searchString
                                            success:^(NSArray* kCandidates) {
@@ -160,27 +161,7 @@ shouldReloadTableForSearchString:(NSString*)searchString
 
 - (void)searchBarSearchButtonClicked:(UISearchBar*)searchBar
 {
-    [_searchResults removeAllObjects]; // 搜索前清空结果列表
-    NSString* searchString = [searchBar text];
-    if ([searchString length]) {
-        [SVProgressHUD showWithStatus:@"正在搜索..." maskType:SVProgressHUDMaskTypeBlack];
-        [LibraryService searchBookByIndex:@"all"
-                                  withKey:searchString
-                                  success:^(NSArray* results) {
-                                      [_searchResults addObjectsFromArray:results];
-                                      [_tableView reloadData];
-
-                                      [self.searchDisplayController setActive:NO animated:YES];
-                                      [self setHotSearchViewHidden:YES];
-                                      [SVProgressHUD dismiss];
-
-                                      [_searchBar setText:searchString];
-                                  }
-                                  failure:^{
-                                      // NSLog(@"failure to get book list.");
-                                      [SVProgressHUD dismiss];
-                                  }];
-    }
+    [self doSearchWithKey:searchBar.text];
 }
 
 #pragma mark - UITableViewDataSource
@@ -220,8 +201,33 @@ shouldReloadTableForSearchString:(NSString*)searchString
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
     if (tableView == self.searchDisplayController.searchResultsTableView) {
-        [_searchBar setText:[tableView cellForRowAtIndexPath:indexPath].textLabel.text];
-        [self searchBarSearchButtonClicked:_searchBar];
+        [self doSearchWithKey:[tableView cellForRowAtIndexPath:indexPath].textLabel.text];
+    }
+}
+
+#pragma mark -
+- (void)doSearchWithKey:(NSString*)key
+{
+    [_searchResults removeAllObjects]; // 搜索前清空结果列表
+    if ([key length]) {
+        [SVProgressHUD showWithStatus:@"正在搜索..." maskType:SVProgressHUDMaskTypeBlack];
+        [_searchBar resignFirstResponder];
+        [LibraryService searchBookByIndex:@"all"
+                                  withKey:key
+                                  success:^(NSArray* results) {
+                                      [_searchResults addObjectsFromArray:results];
+                                      [_tableView reloadData];
+
+                                      [self setHotSearchViewHidden:YES];
+                                      [self.searchDisplayController setActive:NO];
+                                      [SVProgressHUD dismiss];
+
+                                      [_searchBar setText:key];
+                                  }
+                                  failure:^{
+                                      // NSLog(@"failure to get book list.");
+                                      [SVProgressHUD dismiss];
+                                  }];
     }
 }
 

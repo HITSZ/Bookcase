@@ -62,7 +62,7 @@
                       kCandidates = [NSJSONSerialization JSONObjectWithData:responseObject
                                                                     options:NSJSONReadingMutableContainers
                                                                       error:nil];
-                      success(kCandidates);
+                      success([self deduplicateObjectsOfArray:kCandidates]);
                   }
                   failure:^(AFHTTPRequestOperation* operation, NSError* error){
 
@@ -200,6 +200,13 @@
     }
 }
 
+/**
+ *  过滤检索词中的关键词，将出现的关键词替换为一个空格符。
+ *
+ *  @param origin 原始字符串
+ *
+ *  @return 过滤后的字符串
+ */
 + (NSString*)filterString:(NSString*)origin
 {
     NSArray* filterWords = @[
@@ -235,6 +242,12 @@
         origin = [origin stringByReplacingOccurrencesOfString:word withString:@" "];
     }
     return origin;
+}
+
+
++ (NSArray*)deduplicateObjectsOfArray:(NSArray*)kCandidates
+{
+    return [(NSSet*)[NSOrderedSet orderedSetWithArray:kCandidates] allObjects];
 }
 
 @end

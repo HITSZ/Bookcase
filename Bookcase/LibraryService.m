@@ -20,6 +20,7 @@
     [self requestByMethod:@"GET"
                   withURL:urlString
                parameters:parameters
+                  timeout:0
                   success:^(AFHTTPRequestOperation* operation, id responseObject) {
                       NSMutableArray* hotWords = [NSMutableArray new];
                       IGHTMLDocument* html = [[IGHTMLDocument alloc] initWithHTMLData:responseObject encoding:@"utf8" error:nil];
@@ -58,6 +59,7 @@
     [self requestByMethod:@"POST"
                   withURL:urlString
                parameters:parameters
+                  timeout:1
                   success:^(AFHTTPRequestOperation* operation, id responseObject) {
                       kCandidates = [NSJSONSerialization JSONObjectWithData:responseObject
                                                                     options:NSJSONReadingMutableContainers
@@ -65,7 +67,7 @@
                       success([self deduplicateObjectsOfArray:kCandidates]);
                   }
                   failure:^(AFHTTPRequestOperation* operation, NSError* error){
-
+                      failure();
                   }];
 }
 
@@ -94,6 +96,7 @@
     [self requestByMethod:@"GET"
                   withURL:urlString
                parameters:parameters
+                  timeout:5
                   success:^(AFHTTPRequestOperation* operation, id responseObject) {
                       IGHTMLDocument* html = [[IGHTMLDocument alloc] initWithHTMLData:responseObject encoding:@"utf8" error:nil];
                       [[html queryWithXPath:@"//ul[@class='booklist']/li"]
@@ -128,20 +131,7 @@
 
 + (void)getBookDetailWithUrl:(NSString*)url success:(void (^)(NSString*))success
 {
-//    AFHTTPRequestSerializer* requestSerializer = [AFHTTPRequestSerializer serializer];
-//    AFHTTPRequestOperation* requestOperation = [[AFHTTPRequestOperation alloc]
-//                                                initWithRequest:[requestSerializer requestWithMethod:@"GET" URLString:url parameters:nil error:nil]];
-//    AFHTTPResponseSerializer* responseSerializer = [AFHTTPResponseSerializer serializer];
-//    [requestOperation setResponseSerializer:responseSerializer];
-//
-//    // 同步请求，小心！！！
-//    [requestOperation start];
-//    [requestOperation waitUntilFinished];
-//
-//    IGHTMLDocument* detailHtml =
-//    [[IGHTMLDocument alloc] initWithHTMLData:[requestOperation responseObject] encoding:@"utf8" error:nil];
-    //    NSString* bookName = [[[detailHtml queryWithXPath:@"//div[@class='booksinfo']/h3"] firstObject] text];
-    //    success(bookName);
+
 }
 
 + (void)sendSearchWordByIndex:(NSString*)index withKey:(NSString*)key
@@ -151,6 +141,7 @@
     [self requestByMethod:@"POST"
                   withURL:urlString
                parameters:parameters
+                  timeout:0
                   success:^(AFHTTPRequestOperation* operation, id responseObject) {
 
                   }
@@ -162,6 +153,7 @@
 + (void)requestByMethod:(NSString*)method
                 withURL:(NSString*)url
              parameters:(NSDictionary*)parameters
+                timeout:(int)seconds
                 success:(void (^)(AFHTTPRequestOperation* operation, id responseObject))success
                 failure:(void (^)(AFHTTPRequestOperation* operation, NSError* error))failure
 {
@@ -175,6 +167,9 @@
 
     AFHTTPRequestOperationManager* manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    if (seconds) {
+        [[manager requestSerializer] setTimeoutInterval:seconds];
+    }
     method = [method lowercaseString];
     if ([method isEqualToString:@"post"]) {
         [manager POST:url

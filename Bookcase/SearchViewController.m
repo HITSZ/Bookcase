@@ -147,22 +147,20 @@ UITextFieldDelegate>
 shouldReloadTableForSearchString:(NSString*)searchString
 {
     NSLog(@"%s%@", __func__, searchString);
+    _kCandidates = @[ searchString ]; // 搜索建议列表初始化为搜索词，再利用网络获取搜索建议列表进行更新
     [LibraryService getSearchWordCandidatesByIndex:@"all"
                                            withKey:searchString
                                            success:^(NSArray* kCandidates) {
-                                               _kCandidates = kCandidates;
+                                               _kCandidates = [kCandidates count] ? kCandidates : _kCandidates;
                                                [self.searchDisplayController.searchResultsTableView reloadData];
                                            }
                                            failure:^{
-
+                                               [self.searchDisplayController.searchResultsTableView reloadData];
                                            }];
     return NO;
 }
 
-- (void)searchBarSearchButtonClicked:(UISearchBar*)searchBar
-{
-    [self doSearchWithKey:searchBar.text];
-}
+- (void)searchBarSearchButtonClicked:(UISearchBar*)searchBar { [self doSearchWithKey:searchBar.text]; }
 
 #pragma mark - UITableViewDataSource
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
@@ -203,6 +201,29 @@ shouldReloadTableForSearchString:(NSString*)searchString
     if (tableView == self.searchDisplayController.searchResultsTableView) {
         [self doSearchWithKey:[tableView cellForRowAtIndexPath:indexPath].textLabel.text];
     }
+}
+
+- (UIView*)tableView:(UITableView*)tableView viewForHeaderInSection:(NSInteger)section
+{
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        UIView* headerView = [UIView new];
+        UILabel* headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, 0, 0)];
+        headerLabel.text = @"搜索建议";
+        headerLabel.textColor = [UIColor lightGrayColor];
+        headerLabel.font = [UIFont systemFontOfSize:12];
+        [headerLabel sizeToFit];
+        [headerView addSubview:headerLabel];
+        return headerView;
+    }
+    return nil;
+}
+
+- (CGFloat)tableView:(UITableView*)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        return 14.5;
+    }
+    return 0;
 }
 
 #pragma mark -

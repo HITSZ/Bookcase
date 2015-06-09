@@ -74,7 +74,7 @@
 + (void)searchBookByIndex:(NSString*)index
                   withKey:(NSString*)key
                   success:(void (^)(NSArray*))success
-                  failure:(void (^)(void))failure
+                  failure:(void (^)(NSInteger))failure
 {
     NSMutableArray* searchResults = [NSMutableArray new];
     key = [key stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
@@ -96,7 +96,7 @@
     [self requestByMethod:@"GET"
                   withURL:urlString
                parameters:parameters
-                  timeout:5
+                  timeout:10
                   success:^(AFHTTPRequestOperation* operation, id responseObject) {
                       IGHTMLDocument* html = [[IGHTMLDocument alloc] initWithHTMLData:responseObject encoding:@"utf8" error:nil];
                       [[html queryWithXPath:@"//ul[@class='booklist']/li"]
@@ -124,7 +124,7 @@
 //                      NSLog(@"%@", searchResults);
                   }
                   failure:^(AFHTTPRequestOperation* operation, NSError* error){
-                      failure();
+                      failure(error.code);
                   }];
     [self sendSearchWordByIndex:index withKey:key];
 }

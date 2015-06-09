@@ -14,7 +14,7 @@
 + (void)searchBookByIndex:(NSString *)index
                   withKey:(NSString *)key
                   success:(void (^)(NSArray *))success
-                  failure:(void (^)(void))failure;
+                  failure:(void (^)(NSInteger))failure;
 
 + (void)getSearchWordCandidatesByIndex:(NSString *)index
                                withKey:(NSString *)key

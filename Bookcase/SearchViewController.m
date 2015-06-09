@@ -115,9 +115,9 @@ UITextFieldDelegate>
 
         // Capture label tap event.
         label.userInteractionEnabled = true;
-        [label
-         addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self
-                                                                      action:@selector(hotSearchWordLabelDidTap:)]];
+        [label addGestureRecognizer:[[UITapGestureRecognizer alloc]
+                                     initWithTarget:self
+                                     action:@selector(hotSearchWordLabelDidTap:)]];
     }
 }
 
@@ -226,18 +226,22 @@ shouldReloadTableForSearchString:(NSString*)searchString
     return 0;
 }
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+- (void)scrollViewDidScroll:(UIScrollView*)scrollView
 {
     if (scrollView == (UIScrollView*)self.searchDisplayController.searchResultsTableView) {
         if (1) {
-            CGFloat sectionHeaderHeight = [self tableView:self.searchDisplayController.searchResultsTableView heightForHeaderInSection:0];
-            if (scrollView.contentOffset.y >= -64 && scrollView.contentOffset.y <= -64 + sectionHeaderHeight) {
-                scrollView.contentInset = UIEdgeInsetsMake(-scrollView.contentOffset.y, 0, scrollView.contentInset.bottom, 0);
-            } else if (scrollView.contentOffset.y > -64 + sectionHeaderHeight) {
-                scrollView.contentInset = UIEdgeInsetsMake(64 - sectionHeaderHeight, 0, scrollView.contentInset.bottom, 0);
+            CGFloat sectionHeaderHeight = [self tableView:self.searchDisplayController.searchResultsTableView
+                                 heightForHeaderInSection:0];
+            if (scrollView.contentOffset.y >= -64
+                && scrollView.contentOffset.y <= -64 + sectionHeaderHeight) {
+                scrollView.contentInset
+                = UIEdgeInsetsMake(-scrollView.contentOffset.y, 0, scrollView.contentInset.bottom, 0);
+            }
+            else if (scrollView.contentOffset.y > -64 + sectionHeaderHeight) {
+                scrollView.contentInset
+                = UIEdgeInsetsMake(64 - sectionHeaderHeight, 0, scrollView.contentInset.bottom, 0);
             }
         }
-
     }
 }
 
@@ -253,16 +257,27 @@ shouldReloadTableForSearchString:(NSString*)searchString
                                   success:^(NSArray* results) {
                                       [_searchResults addObjectsFromArray:results];
                                       [_tableView reloadData];
-
-                                      [self setHotSearchViewHidden:YES];
                                       [self.searchDisplayController setActive:NO];
-                                      [SVProgressHUD dismiss];
-
+                                      [self setHotSearchViewHidden:YES];
+                                      if ([_searchResults count] == 0) {
+                                          [SVProgressHUD showInfoWithStatus:@"换一个姿势试试^_^"
+                                                                   maskType:SVProgressHUDMaskTypeBlack];
+                                      }
+                                      else {
+                                          [SVProgressHUD dismiss];
+                                      }
                                       [_searchBar setText:key];
                                   }
-                                  failure:^{
-                                      // NSLog(@"failure to get book list.");
-                                      [SVProgressHUD dismiss];
+                                  failure:^(NSInteger statusCode) {
+                                      UITableView* tableView = self.searchDisplayController.searchResultsTableView;
+                                      [tableView deselectRowAtIndexPath:tableView.indexPathForSelectedRow animated:YES];
+                                      if (statusCode == -1001) { // timeout
+                                          [SVProgressHUD showInfoWithStatus:@"网络慢如蜗牛喔-_-!"
+                                                                   maskType:SVProgressHUDMaskTypeBlack];
+                                      }
+                                      else {
+                                          [SVProgressHUD showErrorWithStatus:@"网络出错啦~" maskType:SVProgressHUDMaskTypeBlack];
+                                      }
                                   }];
     }
 }

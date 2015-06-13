@@ -229,18 +229,15 @@ shouldReloadTableForSearchString:(NSString*)searchString
 - (void)scrollViewDidScroll:(UIScrollView*)scrollView
 {
     if (scrollView == (UIScrollView*)self.searchDisplayController.searchResultsTableView) {
-        if (1) {
-            CGFloat sectionHeaderHeight = [self tableView:self.searchDisplayController.searchResultsTableView
-                                 heightForHeaderInSection:0];
-            if (scrollView.contentOffset.y >= -64
-                && scrollView.contentOffset.y <= -64 + sectionHeaderHeight) {
-                scrollView.contentInset
-                = UIEdgeInsetsMake(-scrollView.contentOffset.y, 0, scrollView.contentInset.bottom, 0);
-            }
-            else if (scrollView.contentOffset.y > -64 + sectionHeaderHeight) {
-                scrollView.contentInset
-                = UIEdgeInsetsMake(64 - sectionHeaderHeight, 0, scrollView.contentInset.bottom, 0);
-            }
+        CGFloat sectionHeaderHeight =
+        [self tableView:self.searchDisplayController.searchResultsTableView heightForHeaderInSection:0];
+        if (scrollView.contentOffset.y >= -64 && scrollView.contentOffset.y <= -64 + sectionHeaderHeight) {
+            scrollView.contentInset
+            = UIEdgeInsetsMake(-scrollView.contentOffset.y, 0, scrollView.contentInset.bottom, 0);
+        }
+        else if (scrollView.contentOffset.y > -64 + sectionHeaderHeight) {
+            scrollView.contentInset
+            = UIEdgeInsetsMake(64 - sectionHeaderHeight, 0, scrollView.contentInset.bottom, 0);
         }
     }
 }

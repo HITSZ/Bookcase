@@ -35,7 +35,7 @@
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="平凡的世界 . 第一部/ 路遥著" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sQF-bH-PaU" userLabel="titleLabel">
                                                     <rect key="frame" x="8" y="8" width="271" height="21"/>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="作 者：路遥" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kgm-7L-DK1" userLabel="authorLabel">
@@ -45,7 +45,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="出版者：北京;北京十月文艺出版社:2012" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8dp-Te-Lr5" userLabel="publisherLabel">
-                                                    <rect key="frame" x="10" y="49" width="269" height="15"/>
+                                                    <rect key="frame" x="10" y="48" width="269" height="14"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
@@ -67,6 +67,7 @@
                                             <outlet property="authorLabel" destination="kgm-7L-DK1" id="8ZK-F5-hSl"/>
                                             <outlet property="publisherLabel" destination="8dp-Te-Lr5" id="NP7-He-0QO"/>
                                             <outlet property="titleLabel" destination="sQF-bH-PaU" id="Igt-QP-syf"/>
+                                            <segue destination="ecI-OX-Zk9" kind="push" id="VRx-KJ-9x1"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -90,7 +91,7 @@
                         <outlet property="hotSearchView" destination="IwM-0x-OU1" id="8Pm-iY-Blg"/>
                         <outlet property="searchBar" destination="zsG-w1-U44" id="Ill-Rl-a2u"/>
                         <outlet property="searchDisplayController" destination="GBq-fh-roI" id="38H-d6-2pv"/>
-                        <outlet property="tableView" destination="JuR-qG-EMP" id="uaq-Gq-Zca"/>
+                        <outlet property="searchResultsTableView" destination="JuR-qG-EMP" id="Itj-rI-kWM"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GAk-tb-Hx2" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -117,6 +118,25 @@
             </objects>
             <point key="canvasLocation" x="1143" y="302"/>
         </scene>
+        <!--详细信息-->
+        <scene sceneID="BnS-Qn-ZNu">
+            <objects>
+                <tableViewController id="ecI-OX-Zk9" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="ztV-HL-vph">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
+                        <connections>
+                            <outlet property="dataSource" destination="ecI-OX-Zk9" id="9Ld-9C-nAb"/>
+                            <outlet property="delegate" destination="ecI-OX-Zk9" id="HS8-cI-Dce"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="详细信息" id="iHG-Mx-ZZb"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6Lu-Nh-pMM" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1819" y="302"/>
+        </scene>
         <!--个人-->
         <scene sceneID="b3P-wH-WvW">
             <objects>
@@ -124,7 +144,7 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="d6E-TW-1jZ">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                         <sections>
                             <tableViewSection id="zq1-cu-AQm">
                                 <cells>
@@ -137,7 +157,7 @@
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="收藏" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="72A-mc-ZQQ">
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
@@ -152,7 +172,7 @@
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="借阅" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="rfF-nm-LY6">
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
@@ -171,7 +191,7 @@
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="荐购" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="evX-9b-iL9">
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>

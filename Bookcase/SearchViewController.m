@@ -15,9 +15,10 @@
 @interface SearchViewController () <UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate,
 UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UIView* hotSearchView;
-@property (weak, nonatomic) IBOutlet UITableView* tableView;
+@property (weak, nonatomic) IBOutlet UITableView* searchResultsTableView;
 @property (weak, nonatomic) IBOutlet UISearchBar* searchBar;
 
+@property (weak, nonatomic) UITableView* searchWordCandidatesTableView;
 @property NSArray* kCandidates;
 @property NSMutableArray* searchResults;
 
@@ -31,6 +32,7 @@ UITextFieldDelegate>
 
     _kCandidates = [NSArray new];
     _searchResults = [NSMutableArray new];
+    _searchWordCandidatesTableView = self.searchDisplayController.searchResultsTableView;
 
     UITextField* sbTextField = [_searchBar valueForKey:@"_searchField"];
     sbTextField.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0]; // 改变搜索文本框的背景色
@@ -45,7 +47,7 @@ UITextFieldDelegate>
 - (void)setHotSearchViewHidden:(BOOL)hidden
 {
     [_hotSearchView setHidden:hidden];
-    [_tableView setHidden:!hidden];
+    [_searchResultsTableView setHidden:!hidden];
 }
 
 #pragma mark - HotWordsAcquire
@@ -152,10 +154,10 @@ shouldReloadTableForSearchString:(NSString*)searchString
                                            withKey:searchString
                                            success:^(NSArray* kCandidates) {
                                                _kCandidates = [kCandidates count] ? kCandidates : _kCandidates;
-                                               [self.searchDisplayController.searchResultsTableView reloadData];
+                                               [_searchWordCandidatesTableView reloadData];
                                            }
                                            failure:^{
-                                               [self.searchDisplayController.searchResultsTableView reloadData];
+                                               [_searchWordCandidatesTableView reloadData];
                                            }];
     return NO;
 }
@@ -165,7 +167,7 @@ shouldReloadTableForSearchString:(NSString*)searchString
 #pragma mark - UITableViewDataSource
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (tableView == self.searchDisplayController.searchResultsTableView) {
+    if (tableView == _searchWordCandidatesTableView) {
         return [_kCandidates count];
     }
     else {
@@ -175,9 +177,9 @@ shouldReloadTableForSearchString:(NSString*)searchString
 
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    if (tableView == self.searchDisplayController.searchResultsTableView) {
-        UITableViewCell* cell = [self.searchDisplayController.searchResultsTableView
-                                 dequeueReusableCellWithIdentifier:@"kCandidateListCell"];
+    if (tableView == _searchWordCandidatesTableView) {
+        UITableViewCell* cell =
+        [_searchWordCandidatesTableView dequeueReusableCellWithIdentifier:@"kCandidateListCell"];
         if (cell == nil) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                           reuseIdentifier:@"kCandidateListCell"];
@@ -186,8 +188,8 @@ shouldReloadTableForSearchString:(NSString*)searchString
         return cell;
     }
     else {
-        BookListTableViewCell* cell
-        = (BookListTableViewCell*)[_tableView dequeueReusableCellWithIdentifier:@"bookListCell"];
+        BookListTableViewCell* cell = (BookListTableViewCell*)
+        [_searchResultsTableView dequeueReusableCellWithIdentifier:@"bookListCell"];
         NSDictionary* item = [_searchResults objectAtIndex:indexPath.row];
         cell.titleLabel.text = [item objectForKey:@"title"];
         cell.authorLabel.text = [item objectForKey:@"author"];
@@ -198,14 +200,15 @@ shouldReloadTableForSearchString:(NSString*)searchString
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    if (tableView == self.searchDisplayController.searchResultsTableView) {
+    if (tableView == _searchWordCandidatesTableView) {
         [self doSearchWithKey:[tableView cellForRowAtIndexPath:indexPath].textLabel.text];
     }
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (UIView*)tableView:(UITableView*)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if (tableView == self.searchDisplayController.searchResultsTableView) {
+    if (tableView == _searchWordCandidatesTableView) {
         UIView* headerView = [UIView new];
         UILabel* headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, 0, 0)];
         headerLabel.text = @"搜索建议";
@@ -220,7 +223,7 @@ shouldReloadTableForSearchString:(NSString*)searchString
 
 - (CGFloat)tableView:(UITableView*)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (tableView == self.searchDisplayController.searchResultsTableView) {
+    if (tableView == _searchWordCandidatesTableView) {
         return 14.5;
     }
     return 0;
@@ -228,9 +231,9 @@ shouldReloadTableForSearchString:(NSString*)searchString
 
 - (void)scrollViewDidScroll:(UIScrollView*)scrollView
 {
-    if (scrollView == (UIScrollView*)self.searchDisplayController.searchResultsTableView) {
+    if (scrollView == (UIScrollView*)_searchWordCandidatesTableView) {
         CGFloat sectionHeaderHeight =
-        [self tableView:self.searchDisplayController.searchResultsTableView heightForHeaderInSection:0];
+        [self tableView:_searchWordCandidatesTableView heightForHeaderInSection:0];
         if (scrollView.contentOffset.y >= -64 && scrollView.contentOffset.y <= -64 + sectionHeaderHeight) {
             scrollView.contentInset
             = UIEdgeInsetsMake(-scrollView.contentOffset.y, 0, scrollView.contentInset.bottom, 0);
@@ -253,11 +256,11 @@ shouldReloadTableForSearchString:(NSString*)searchString
                                   withKey:key
                                   success:^(NSArray* results) {
                                       [_searchResults addObjectsFromArray:results];
-                                      [_tableView reloadData];
+                                      [_searchResultsTableView reloadData];
                                       [self.searchDisplayController setActive:NO];
                                       [self setHotSearchViewHidden:YES];
                                       if ([_searchResults count] == 0) {
-                                          [SVProgressHUD showInfoWithStatus:@"换一个姿势试试^_^"
+                                          [SVProgressHUD showInfoWithStatus:@"换一个姿势试试#_#"
                                                                    maskType:SVProgressHUDMaskTypeBlack];
                                       }
                                       else {
@@ -266,8 +269,6 @@ shouldReloadTableForSearchString:(NSString*)searchString
                                       [_searchBar setText:key];
                                   }
                                   failure:^(NSInteger statusCode) {
-                                      UITableView* tableView = self.searchDisplayController.searchResultsTableView;
-                                      [tableView deselectRowAtIndexPath:tableView.indexPathForSelectedRow animated:YES];
                                       if (statusCode == -1001) { // timeout
                                           [SVProgressHUD showInfoWithStatus:@"网络慢如蜗牛喔-_-!"
                                                                    maskType:SVProgressHUDMaskTypeBlack];

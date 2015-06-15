@@ -15,7 +15,7 @@
                         <viewControllerLayoutGuide type="bottom" id="mtY-DF-Ou5"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="N6k-lV-S63">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IwM-0x-OU1">
@@ -118,12 +118,12 @@
             </objects>
             <point key="canvasLocation" x="1143" y="302"/>
         </scene>
-        <!--详细信息-->
+        <!--BookDetail-->
         <scene sceneID="BnS-Qn-ZNu">
             <objects>
-                <tableViewController id="ecI-OX-Zk9" sceneMemberID="viewController">
+                <tableViewController title="BookDetail" hidesBottomBarWhenPushed="YES" id="ecI-OX-Zk9" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="ztV-HL-vph">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                         <connections>

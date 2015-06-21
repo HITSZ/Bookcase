@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2481DC1F94CAC5153FC5D2F1 /* libPods-Bookcase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CB603918AADC20E65F1E56F3 /* libPods-Bookcase.a */; };
+		740BF6621B35B418009FD806 /* BookDetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 740BF6611B35B418009FD806 /* BookDetailTableViewController.m */; };
 		7450DEBF1B1CB7B300994915 /* LibraryService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7450DEBE1B1CB7B300994915 /* LibraryService.m */; };
 		7452426C1B10CF14005BE8CD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7452426B1B10CF14005BE8CD /* main.m */; };
 		7452426F1B10CF14005BE8CD /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7452426E1B10CF14005BE8CD /* AppDelegate.m */; };
@@ -32,6 +33,8 @@
 
 /* Begin PBXFileReference section */
 		44DD1899500C869163178978 /* Pods-Bookcase.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bookcase.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Bookcase/Pods-Bookcase.debug.xcconfig"; sourceTree = "<group>"; };
+		740BF6601B35B418009FD806 /* BookDetailTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BookDetailTableViewController.h; sourceTree = "<group>"; };
+		740BF6611B35B418009FD806 /* BookDetailTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BookDetailTableViewController.m; sourceTree = "<group>"; };
 		7450DEBD1B1CB7B300994915 /* LibraryService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibraryService.h; sourceTree = "<group>"; };
 		7450DEBE1B1CB7B300994915 /* LibraryService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LibraryService.m; sourceTree = "<group>"; };
 		745242661B10CF14005BE8CD /* Bookcase.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Bookcase.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -108,6 +111,8 @@
 				745FD2191B1F215C00DBC5CC /* BookListTableViewCell.h */,
 				745FD21A1B1F215C00DBC5CC /* BookListTableViewCell.m */,
 				7478E0ED1B178831004DA433 /* Main_iPhone.storyboard */,
+				740BF6601B35B418009FD806 /* BookDetailTableViewController.h */,
+				740BF6611B35B418009FD806 /* BookDetailTableViewController.m */,
 				745242791B10CF14005BE8CD /* Images.xcassets */,
 				7452427B1B10CF14005BE8CD /* LaunchScreen.xib */,
 				745242691B10CF14005BE8CD /* Supporting Files */,
@@ -298,6 +303,7 @@
 				745242721B10CF14005BE8CD /* SearchViewController.m in Sources */,
 				7450DEBF1B1CB7B300994915 /* LibraryService.m in Sources */,
 				7452426C1B10CF14005BE8CD /* main.m in Sources */,
+				740BF6621B35B418009FD806 /* BookDetailTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

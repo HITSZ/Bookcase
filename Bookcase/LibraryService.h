@@ -21,4 +21,8 @@
                                success:(void (^)(NSArray *))success
                                failure:(void (^)(void))failure;
 
++ (void)getBookDetailWithUrl:(NSString*)url
+                     success:(void (^)(NSDictionary*))success
+                     failure:(void (^)(void))failure;
+
 @end

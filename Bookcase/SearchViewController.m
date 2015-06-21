@@ -9,6 +9,7 @@
 #import "SearchViewController.h"
 #import "LibraryService.h"
 #import "BookListTableViewCell.h"
+#import "BookDetailTableViewController.h"
 
 #import "SVProgressHUD.h"
 
@@ -278,6 +279,16 @@ shouldReloadTableForSearchString:(NSString*)searchString
                                           [SVProgressHUD showErrorWithStatus:@"网络出错啦~" maskType:SVProgressHUDMaskTypeBlack];
                                       }
                                   }];
+    }
+}
+
+#pragma mark - Navigation
+
+- (void)prepareForSegue:(UIStoryboardSegue*)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"BookDetail"]) {
+        BookDetailTableViewController* bookDetailTVC = [segue destinationViewController];
+        bookDetailTVC.url = [[_searchResults objectAtIndex:_searchResultsTableView.indexPathForSelectedRow.row] objectForKey:@"href"];
     }
 }
 

@@ -23,10 +23,12 @@
                   timeout:0
                   success:^(AFHTTPRequestOperation* operation, id responseObject) {
                       NSMutableArray* hotWords = [NSMutableArray new];
-                      IGHTMLDocument* html = [[IGHTMLDocument alloc] initWithHTMLData:responseObject encoding:@"utf8" error:nil];
-                      [[html queryWithXPath:@"//a"] enumerateNodesUsingBlock:^(IGXMLNode* content, NSUInteger idx, BOOL* stop) {
-                          [hotWords addObject:content.text];
-                      }];
+                      IGHTMLDocument* html =
+                      [[IGHTMLDocument alloc] initWithHTMLData:responseObject encoding:@"utf8" error:nil];
+                      [[html queryWithXPath:@"//a"]
+                       enumerateNodesUsingBlock:^(IGXMLNode* content, NSUInteger idx, BOOL* stop) {
+                           [hotWords addObject:content.text];
+                       }];
                       success([hotWords copy]);
                   }
                   failure:^(AFHTTPRequestOperation* operation, NSError* error){
@@ -66,7 +68,7 @@
                                                                       error:nil];
                       success([self deduplicateObjectsOfArray:kCandidates]);
                   }
-                  failure:^(AFHTTPRequestOperation* operation, NSError* error){
+                  failure:^(AFHTTPRequestOperation* operation, NSError* error) {
                       failure();
                   }];
 }
@@ -98,40 +100,79 @@
                parameters:parameters
                   timeout:10
                   success:^(AFHTTPRequestOperation* operation, id responseObject) {
-                      IGHTMLDocument* html = [[IGHTMLDocument alloc] initWithHTMLData:responseObject encoding:@"utf8" error:nil];
-                      [[html queryWithXPath:@"//ul[@class='booklist']/li"]
-                       enumerateNodesUsingBlock:^(IGXMLNode* node, NSUInteger idx, BOOL* stop) {
-                           IGXMLNode* titleNode = [[node queryWithXPath:@"h3[@class='title']/a"] firstObject];
+                      IGHTMLDocument* html =
+                      [[IGHTMLDocument alloc] initWithHTMLData:responseObject encoding:@"utf8" error:nil];
+                      [[html queryWithXPath:@"//ul[@class='booklist']/li"] enumerateNodesUsingBlock:^(IGXMLNode* node,
+                                                                                                      NSUInteger idx,
+                                                                                                      BOOL* stop) {
+                          IGXMLNode* titleNode = [[node queryWithXPath:@"h3[@class='title']/a"] firstObject];
 
-                           NSString* href = [titleNode attribute:@"href"];
-                           href = [NSString stringWithFormat:@"http://219.223.211.171/Search/%@", href];
-                           NSString* title = [titleNode.text
-                                              stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+                          NSString* href = [titleNode attribute:@"href"];
+                          href = [NSString stringWithFormat:@"http://219.223.211.171/Search/%@", href];
+                          NSString* title = [titleNode.text
+                                             stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 
-                           NSString* author =
-                           [[[node queryWithXPath:@"div[@class='info']/span[@class='author']"] firstObject] text];
-                           NSString* publisher =
-                           [[[node queryWithXPath:@"div[@class='info']/span[@class='publisher']"] firstObject] text];
+                          NSString* author =
+                          [[[node queryWithXPath:@"div[@class='info']/span[@class='author']"] firstObject] text];
+                          NSString* publisher =
+                          [[[node queryWithXPath:@"div[@class='info']/span[@class='publisher']"] firstObject] text];
 
-                           [searchResults addObject:@{
-                                                      @"title" : title,
-                                                      @"href" : href,
-                                                      @"author" : author,
-                                                      @"publisher" : publisher
-                                                      }];
-                       }];
+                          [searchResults addObject:@{
+                                                     @"title" : title,
+                                                     @"href" : href,
+                                                     @"author" : author,
+                                                     @"publisher" : publisher
+                                                     }];
+                      }];
                       success([searchResults copy]);
-//                      NSLog(@"%@", searchResults);
+                      //                      NSLog(@"%@", searchResults);
                   }
-                  failure:^(AFHTTPRequestOperation* operation, NSError* error){
+                  failure:^(AFHTTPRequestOperation* operation, NSError* error) {
                       failure(error.code);
                   }];
     [self sendSearchWordByIndex:index withKey:key];
 }
 
-+ (void)getBookDetailWithUrl:(NSString*)url success:(void (^)(NSString*))success
++ (void)getBookDetailWithUrl:(NSString*)url
+                     success:(void (^)(NSDictionary*))success
+                     failure:(void (^)(void))failure
 {
+    [self requestByMethod:@"GET"
+                  withURL:url
+               parameters:nil
+                  timeout:10
+                  success:^(AFHTTPRequestOperation* operation, id responseObject) {
+                      NSMutableDictionary* bookDetail = [NSMutableDictionary new];
+                      [bookDetail setObject:[NSMutableDictionary new] forKey:@"basic"];
+                      [bookDetail setObject:[NSMutableDictionary new] forKey:@"status"];
 
+                      NSMutableArray* keys = [NSMutableArray new];
+                      IGHTMLDocument* html =
+                      [[IGHTMLDocument alloc] initWithHTMLData:responseObject encoding:@"utf8" error:nil];
+                      [[html queryWithXPath:@"//div[@class='booksinfo']"]
+                       enumerateNodesUsingBlock:^(IGXMLNode* node, NSUInteger idx, BOOL* stop) {
+                           NSString* bookName = [[[[node queryWithXPath:@"h3[@class='title']"] firstObject] text]
+                                                 componentsSeparatedByString:@"/ "][0];
+                           [[bookDetail objectForKey:@"basic"] setObject:bookName forKey:@"书 名"];
+                           [keys addObject:@"书 名"];
+                       }];
+                      [[html queryWithXPath:@"//div[@class='righttop']/ul/li"]
+                       enumerateNodesUsingBlock:^(IGXMLNode* node, NSUInteger idx, BOOL* stop) {
+                           NSString* liText = [[node text]
+                                               stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+                           NSArray* liSplitedText = [liText componentsSeparatedByString:@"："];
+                           if ([liSplitedText[0] length] > 0 && [liSplitedText[1] length] > 0) {
+                               [[bookDetail objectForKey:@"basic"] setObject:liSplitedText[1]
+                                                                      forKey:liSplitedText[0]];
+                               [keys addObject:liSplitedText[0]];
+                               [[bookDetail objectForKey:@"basic"] setObject:[keys copy] forKey:@"keys"];
+                           }
+                       }];
+                      success([bookDetail copy]);
+                  }
+                  failure:^(AFHTTPRequestOperation* operation, NSError* error) {
+                      failure();
+                  }];
 }
 
 + (void)sendSearchWordByIndex:(NSString*)index withKey:(NSString*)key
@@ -157,13 +198,15 @@
                 success:(void (^)(AFHTTPRequestOperation* operation, id responseObject))success
                 failure:(void (^)(AFHTTPRequestOperation* operation, NSError* error))failure
 {
-    // 过滤v_value中的关键词，根据网页中js代码得知
-    NSMutableDictionary* paras = [parameters mutableCopy];
-    NSString* v_value = [paras objectForKey:@"v_value"];
-    if (v_value) {
-        [paras setObject:[self filterString:v_value] forKey:@"v_value"];
+    if (parameters) {
+        // 过滤v_value中的关键词，根据网页中js代码得知
+        NSMutableDictionary* paras = [parameters mutableCopy];
+        NSString* v_value = [paras objectForKey:@"v_value"];
+        if (v_value) {
+            [paras setObject:[self filterString:v_value] forKey:@"v_value"];
+        }
+        parameters = [paras copy];
     }
-    parameters = [paras copy];
 
     AFHTTPRequestOperationManager* manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
@@ -238,7 +281,6 @@
     }
     return origin;
 }
-
 
 + (NSArray*)deduplicateObjectsOfArray:(NSArray*)kCandidates
 {

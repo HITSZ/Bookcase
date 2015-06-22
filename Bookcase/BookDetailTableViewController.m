@@ -8,6 +8,7 @@
 
 #import "BookDetailTableViewController.h"
 #import "LibraryService.h"
+#import "BookStatusTableViewCell.h"
 
 #import "SVProgressHUD.h"
 
@@ -77,23 +78,26 @@
 
 enum { BASIC_SECTION = 0, STATUS_SECTION };
 
-//- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-//{
-//    switch (section) {
-//        case STATUS_SECTION:
-//            return @"馆藏";
-//        default:
-//            return nil;
-//    }
-//}
+- (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
+{
+    switch (section) {
+        case STATUS_SECTION:
+            if ([_bookDetail[@"status"][@"in"] count] + [_bookDetail[@"status"][@"out"] count]) {
+                return @"馆藏";
+            }
+            return nil;
+        default:
+            return nil;
+    }
+}
 
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
     switch (section) {
         case BASIC_SECTION:
-            return [[[_bookDetail objectForKey:@"basic"] objectForKey:@"keys"] count];
+            return [_bookDetail[@"basic"][@"keys"] count];
         case STATUS_SECTION:
-            return [[_bookDetail objectForKey:@"status"] count];
+            return [_bookDetail[@"status"][@"in"] count] + [_bookDetail[@"status"][@"out"] count];
         default:
             return 0;
     }
@@ -108,17 +112,32 @@ enum { BASIC_SECTION = 0, STATUS_SECTION };
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
                                               reuseIdentifier:@"bookBasicDetailCell"];
             }
-            NSDictionary* bookBasicDetail = [_bookDetail objectForKey:@"basic"];
-            cell.textLabel.text = [[bookBasicDetail objectForKey:@"keys"] objectAtIndex:indexPath.row];
-            cell.detailTextLabel.text = [bookBasicDetail objectForKey:cell.textLabel.text];
+            cell.textLabel.text = _bookDetail[@"basic"][@"keys"][indexPath.row];
+            cell.detailTextLabel.text = _bookDetail[@"basic"][cell.textLabel.text];
             return cell;
-        } break;
-        case STATUS_SECTION:
-            break;
+        }
+        case STATUS_SECTION: {
+            BookStatusTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"bookStatusCell"];
+            NSInteger inCount = [_bookDetail[@"status"][@"in"] count];
+            if (indexPath.row < inCount) {
+                cell.barcodeInfoLabel.text = _bookDetail[@"status"][@"in"][indexPath.row][0];
+                cell.statusLabel.text = _bookDetail[@"status"][@"in"][indexPath.row][1];
+                cell.otherInfoLabel.text = _bookDetail[@"status"][@"in"][indexPath.row][2];
+                cell.otherLabel.text = @"流通类别";
+            }
+            else {
+                cell.barcodeInfoLabel.text = _bookDetail[@"status"][@"out"][indexPath.row - inCount][0];
+                cell.otherInfoLabel.text = _bookDetail[@"status"][@"out"][indexPath.row - inCount][1];
+                cell.statusLabel.text = @"借出";
+                cell.otherLabel.text = @"应还日期";
+                cell.barcodeLabel.textColor = cell.statusLabel.textColor = cell.otherLabel.textColor =
+                [UIColor lightGrayColor];
+            }
+            return cell;
+        }
         default:
-            break;
+            return nil;
     }
-    return nil;
 }
 
 @end

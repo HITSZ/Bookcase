@@ -149,6 +149,8 @@
                       NSMutableArray* keys = [NSMutableArray new];
                       IGHTMLDocument* html =
                       [[IGHTMLDocument alloc] initWithHTMLData:responseObject encoding:@"utf8" error:nil];
+
+                      // 基本信息
                       [[html queryWithXPath:@"//div[@class='booksinfo']"]
                        enumerateNodesUsingBlock:^(IGXMLNode* node, NSUInteger idx, BOOL* stop) {
                            NSString* bookName = [[[[node queryWithXPath:@"h3[@class='title']"] firstObject] text]
@@ -168,6 +170,37 @@
                                [[bookDetail objectForKey:@"basic"] setObject:[keys copy] forKey:@"keys"];
                            }
                        }];
+
+                      // 馆藏情况
+                      // 在馆
+                      NSMutableArray* status = [NSMutableArray new];
+                      [[html queryWithXPath:@"//div[@class='tab_4_title' and contains(a,'深圳大学城图书馆')]/following-sibling::div[1]"]
+                      enumerateNodesUsingBlock:^(IGXMLNode *node, NSUInteger idx, BOOL *stop) {
+                          [[node queryWithXPath:@"div//tr[position()>1]"] enumerateNodesUsingBlock:^(IGXMLNode *node, NSUInteger idx, BOOL *stop) {
+                              NSMutableArray* statusInfo = [NSMutableArray new]; // 三元组(条形码，馆藏状态，流通类别)
+                              [[node queryWithXPath:@"td"] enumerateNodesUsingBlock:^(IGXMLNode *node, NSUInteger idx, BOOL *stop) {
+                                  if (idx == 0 || idx == 3 || idx == 5) {
+                                      [statusInfo addObject:[node text]];
+                                  }
+                              }];
+                              [status addObject:statusInfo];
+                          }];
+                      }];
+                      [[bookDetail objectForKey:@"status"] setObject:[status copy] forKey:@"in"];
+                      // 已借
+                      [status removeAllObjects];
+                      [[html queryWithXPath:@"//div[@class='tab_4_show']//tr[contains(.,'深圳大学城图书馆')]"]
+                      enumerateNodesUsingBlock:^(IGXMLNode *node, NSUInteger idx, BOOL *stop) {
+                          NSMutableArray* statusInfo = [NSMutableArray new]; // 二元组(条形码，借还日期)
+                          [[node queryWithXPath:@"td"] enumerateNodesUsingBlock:^(IGXMLNode *node, NSUInteger idx, BOOL *stop) {
+                              if (idx == 0 || idx == 5) {
+                                  [statusInfo addObject:[node text]];
+                              }
+                          }];
+                          [status addObject:statusInfo];
+                      }];
+                      [[bookDetail objectForKey:@"status"] setObject:[status copy] forKey:@"out"];
+//                      NSLog(@"%@", bookDetail);
                       success([bookDetail copy]);
                   }
                   failure:^(AFHTTPRequestOperation* operation, NSError* error) {

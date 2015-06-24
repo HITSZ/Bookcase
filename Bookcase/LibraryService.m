@@ -176,7 +176,7 @@
                       NSMutableArray* status = [NSMutableArray new];
                       [[html queryWithXPath:@"//div[@class='tab_4_title' and contains(a,'深圳大学城图书馆')]/following-sibling::div[1]"]
                       enumerateNodesUsingBlock:^(IGXMLNode *node, NSUInteger idx, BOOL *stop) {
-                          [[node queryWithXPath:@"div//tr[position()>1]"] enumerateNodesUsingBlock:^(IGXMLNode *node, NSUInteger idx, BOOL *stop) {
+                          [[node queryWithXPath:@"div//span[@class='title_1' and contains(span,'可外借馆藏')]/following-sibling::table[1]//tr[position()>1]"] enumerateNodesUsingBlock:^(IGXMLNode *node, NSUInteger idx, BOOL *stop) {
                               NSMutableArray* statusInfo = [NSMutableArray new]; // 三元组(条形码，馆藏状态，流通类别)
                               [[node queryWithXPath:@"td"] enumerateNodesUsingBlock:^(IGXMLNode *node, NSUInteger idx, BOOL *stop) {
                                   if (idx == 0 || idx == 3 || idx == 5) {

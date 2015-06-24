@@ -174,9 +174,22 @@
                       // 馆藏情况
                       // 在馆
                       NSMutableArray* status = [NSMutableArray new];
-                      [[html queryWithXPath:@"//div[@class='tab_4_title' and contains(a,'深圳大学城图书馆')]/following-sibling::div[1]"]
+                      /*
+                       * github issue#19
+                       */
+                      __block NSUInteger index;
+                      // 定位包含'深圳大学城图书馆'的'div.tab_4_title'，并遍历所有a子标签，确定utsz的idx
+                      [[html queryWithXPath:@"//div[@class='tab_4_title' and a[contains(@title,'深圳大学城图书馆(深圳市科技图书馆)')]]/a"]
                       enumerateNodesUsingBlock:^(IGXMLNode *node, NSUInteger idx, BOOL *stop) {
-                          [[node queryWithXPath:@"div//span[@class='title_1' and contains(span,'可外借馆藏')]/following-sibling::table[1]//tr[position()>1]"] enumerateNodesUsingBlock:^(IGXMLNode *node, NSUInteger idx, BOOL *stop) {
+                          if ([[node attribute:@"title"] hasPrefix:@"深圳大学城图书馆(深圳市科技图书馆)"]) {
+                              index = idx;
+                          }
+                      }];
+                      // 选取'div.tab_4_show'的第index子标签'div.tab_4_text'
+                      [[html queryWithXPath:@"//div[@class='tab_4_title' and a[contains(@title,'深圳大学城图书馆(深圳市科技图书馆)')]]/following-sibling::div[1]"]
+                      enumerateNodesUsingBlock:^(IGXMLNode *node, NSUInteger idx, BOOL *stop) {
+                          NSString* xpath = [NSString stringWithFormat:@"div[%u]//span[@class='title_1' and contains(span,'可外借馆藏')]/following-sibling::table[1]//tr[position()>1]", index + 1];
+                          [[node queryWithXPath:xpath] enumerateNodesUsingBlock:^(IGXMLNode *node, NSUInteger idx, BOOL *stop) {
                               NSMutableArray* statusInfo = [NSMutableArray new]; // 三元组(条形码，馆藏状态，流通类别)
                               [[node queryWithXPath:@"td"] enumerateNodesUsingBlock:^(IGXMLNode *node, NSUInteger idx, BOOL *stop) {
                                   if (idx == 0 || idx == 3 || idx == 5) {

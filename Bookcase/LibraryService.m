@@ -202,7 +202,7 @@
                       [[bookDetail objectForKey:@"status"] setObject:[status copy] forKey:@"in"];
                       // 已借
                       [status removeAllObjects];
-                      [[html queryWithXPath:@"//div[@class='tab_4_show']//tr[contains(.,'深圳大学城图书馆')]"]
+                      [[html queryWithXPath:@"//div[@class='tab_4_show' and div[contains(span,'已借出馆藏')]]//tr[contains(.,'深圳大学城图书馆')]"]
                       enumerateNodesUsingBlock:^(IGXMLNode *node, NSUInteger idx, BOOL *stop) {
                           NSMutableArray* statusInfo = [NSMutableArray new]; // 二元组(条形码，借还日期)
                           [[node queryWithXPath:@"td"] enumerateNodesUsingBlock:^(IGXMLNode *node, NSUInteger idx, BOOL *stop) {

@@ -228,7 +228,7 @@ shouldReloadTableForSearchString:(NSString*)searchString
     if (tableView == _searchWordCandidatesTableView) {
         return 14.5;
     }
-    return 0;
+    return CGFLOAT_MIN;
 }
 
 - (void)scrollViewDidScroll:(UIScrollView*)scrollView

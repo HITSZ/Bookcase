@@ -53,6 +53,14 @@
 
 - (void)reloadData { [self.tableView reloadData]; }
 
+enum { BASIC_SECTION = 0, STATUS_SECTION };
+
+#pragma mark - Table view delegate
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return section == BASIC_SECTION ? 10 : UITableViewAutomaticDimension;
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
@@ -75,8 +83,6 @@
 
     return [_bookDetail count];
 }
-
-enum { BASIC_SECTION = 0, STATUS_SECTION };
 
 - (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
 {

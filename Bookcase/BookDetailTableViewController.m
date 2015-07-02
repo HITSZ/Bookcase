@@ -56,7 +56,7 @@
 enum { BASIC_SECTION = 0, STATUS_SECTION };
 
 #pragma mark - Table view delegate
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+- (CGFloat)tableView:(UITableView*)tableView heightForHeaderInSection:(NSInteger)section
 {
     return section == BASIC_SECTION ? 10 : UITableViewAutomaticDimension;
 }
@@ -87,11 +87,14 @@ enum { BASIC_SECTION = 0, STATUS_SECTION };
 - (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
 {
     switch (section) {
-        case STATUS_SECTION:
-            if ([_bookDetail[@"status"][@"in"] count] + [_bookDetail[@"status"][@"out"] count]) {
-                return @"馆藏";
+        case STATUS_SECTION: {
+            NSUInteger left = [_bookDetail[@"status"][@"in"] count];
+            NSUInteger total = left + [_bookDetail[@"status"][@"out"] count];
+            if (total) {
+                return [NSString stringWithFormat:@"馆藏 %lu/%lu", left, total];
             }
             return nil;
+        }
         default:
             return nil;
     }

@@ -13,8 +13,8 @@
 
 #import "SVProgressHUD.h"
 
-@interface SearchViewController () <UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate,
-UITextFieldDelegate>
+@interface SearchViewController () <UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
+
 @property (weak, nonatomic) IBOutlet UIView* hotSearchView;
 @property (weak, nonatomic) IBOutlet UITableView* searchResultsTableView;
 @property (weak, nonatomic) IBOutlet UISearchBar* searchBar;
@@ -22,6 +22,7 @@ UITextFieldDelegate>
 @property (weak, nonatomic) UITableView* searchWordCandidatesTableView;
 @property NSArray* kCandidates;
 @property NSMutableArray* searchResults;
+@property NSString* lastSearchString;
 
 @end
 
@@ -44,6 +45,9 @@ UITextFieldDelegate>
                                          [self hotSearchWordsLabelDidInsert:hotWords];
                                      }];
     [self setHotSearchViewHidden:NO];
+
+    [_searchResultsTableView setTableFooterView:[UIView new]]; // 不显示多余的空表格
+    [_searchWordCandidatesTableView setTableFooterView:[UIView new]];
 }
 
 - (void)setHotSearchViewHidden:(BOOL)hidden
@@ -119,9 +123,7 @@ UITextFieldDelegate>
 
         // Capture label tap event.
         label.userInteractionEnabled = true;
-        [label addGestureRecognizer:[[UITapGestureRecognizer alloc]
-                                     initWithTarget:self
-                                     action:@selector(hotSearchWordLabelDidTap:)]];
+        [label addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hotSearchWordLabelDidTap:)]];
     }
 }
 
@@ -147,20 +149,22 @@ UITextFieldDelegate>
     }
 }
 
-- (BOOL)searchDisplayController:(UISearchDisplayController*)controller
-shouldReloadTableForSearchString:(NSString*)searchString
+- (BOOL)searchDisplayController:(UISearchDisplayController*)controller shouldReloadTableForSearchString:(NSString*)searchString
 {
-    NSLog(@"%s%@", __func__, searchString);
-    _kCandidates = @[ searchString ]; // 搜索建议列表初始化为搜索词，再利用网络获取搜索建议列表进行更新
-    [LibraryService getSearchWordCandidatesByIndex:@"all"
-                                           withKey:searchString
-                                           success:^(NSArray* kCandidates) {
-                                               _kCandidates = [kCandidates count] ? kCandidates : _kCandidates;
-                                               [_searchWordCandidatesTableView reloadData];
-                                           }
-                                           failure:^{
-                                               [_searchWordCandidatesTableView reloadData];
-                                           }];
+    if ([_lastSearchString isEqualToString:searchString] == NO) {
+        NSLog(@"%s%@", __func__, searchString);
+        _kCandidates = @[ searchString ]; // 搜索建议列表初始化为搜索词，再利用网络获取搜索建议列表进行更新
+        [LibraryService getSearchWordCandidatesByIndex:@"all"
+                                               withKey:searchString
+                                               success:^(NSArray* kCandidates) {
+                                                   _kCandidates = [kCandidates count] ? kCandidates : _kCandidates;
+                                                   [_searchWordCandidatesTableView reloadData];
+                                               }
+                                               failure:^{
+                                                   [_searchWordCandidatesTableView reloadData];
+                                               }];
+    }
+    _lastSearchString = searchString;
     return NO;
 }
 
@@ -180,18 +184,15 @@ shouldReloadTableForSearchString:(NSString*)searchString
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     if (tableView == _searchWordCandidatesTableView) {
-        UITableViewCell* cell =
-        [_searchWordCandidatesTableView dequeueReusableCellWithIdentifier:@"kCandidateListCell"];
+        UITableViewCell* cell = [_searchWordCandidatesTableView dequeueReusableCellWithIdentifier:@"kCandidateListCell"];
         if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
-                                          reuseIdentifier:@"kCandidateListCell"];
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"kCandidateListCell"];
         }
         cell.textLabel.text = [_kCandidates objectAtIndex:indexPath.row];
         return cell;
     }
     else {
-        BookListTableViewCell* cell = (BookListTableViewCell*)
-        [_searchResultsTableView dequeueReusableCellWithIdentifier:@"bookListCell"];
+        BookListTableViewCell* cell = [_searchResultsTableView dequeueReusableCellWithIdentifier:@"bookListCell"];
         NSDictionary* item = [_searchResults objectAtIndex:indexPath.row];
         cell.titleLabel.text = [item objectForKey:@"title"];
         cell.authorLabel.text = [item objectForKey:@"author"];
@@ -234,15 +235,12 @@ shouldReloadTableForSearchString:(NSString*)searchString
 - (void)scrollViewDidScroll:(UIScrollView*)scrollView
 {
     if (scrollView == (UIScrollView*)_searchWordCandidatesTableView) {
-        CGFloat sectionHeaderHeight =
-        [self tableView:_searchWordCandidatesTableView heightForHeaderInSection:0];
+        CGFloat sectionHeaderHeight = [self tableView:_searchWordCandidatesTableView heightForHeaderInSection:0];
         if (scrollView.contentOffset.y >= -64 && scrollView.contentOffset.y <= -64 + sectionHeaderHeight) {
-            scrollView.contentInset
-            = UIEdgeInsetsMake(-scrollView.contentOffset.y, 0, scrollView.contentInset.bottom, 0);
+            scrollView.contentInset = UIEdgeInsetsMake(-scrollView.contentOffset.y, 0, scrollView.contentInset.bottom, 0);
         }
         else if (scrollView.contentOffset.y > -64 + sectionHeaderHeight) {
-            scrollView.contentInset
-            = UIEdgeInsetsMake(64 - sectionHeaderHeight, 0, scrollView.contentInset.bottom, 0);
+            scrollView.contentInset = UIEdgeInsetsMake(64 - sectionHeaderHeight, 0, scrollView.contentInset.bottom, 0);
         }
     }
 }
@@ -257,29 +255,42 @@ shouldReloadTableForSearchString:(NSString*)searchString
         [LibraryService searchBookByIndex:@"all"
                                   withKey:key
                                   success:^(NSArray* results) {
+                                      [[NSNotificationCenter defaultCenter] addObserver:self
+                                                                               selector:@selector(searchDoneWithSuccess)
+                                                                                   name:SVProgressHUDDidDisappearNotification
+                                                                                 object:nil];
                                       [_searchResults addObjectsFromArray:results];
                                       [_searchResultsTableView reloadData];
-                                      [self.searchDisplayController setActive:NO];
+                                      [self.searchDisplayController setActive:NO animated:YES];
                                       [self setHotSearchViewHidden:YES];
-                                      if ([_searchResults count] == 0) {
-                                          [SVProgressHUD showInfoWithStatus:@"换一个姿势试试#_#"
-                                                                   maskType:SVProgressHUDMaskTypeBlack];
-                                      }
-                                      else {
-                                          [SVProgressHUD dismiss];
-                                      }
                                       [_searchBar setText:key];
+                                      [SVProgressHUD dismiss];
                                   }
                                   failure:^(NSInteger statusCode) {
                                       if (statusCode == -1001) { // timeout
-                                          [SVProgressHUD showInfoWithStatus:@"网络慢如蜗牛喔-_-!"
-                                                                   maskType:SVProgressHUDMaskTypeBlack];
+                                          [SVProgressHUD showInfoWithStatus:@"网络慢如蜗牛喔-_-!" maskType:SVProgressHUDMaskTypeBlack];
                                       }
                                       else {
                                           [SVProgressHUD showErrorWithStatus:@"网络出错啦~" maskType:SVProgressHUDMaskTypeBlack];
                                       }
                                   }];
     }
+}
+
+- (void)searchDoneWithSuccess
+{
+    if ([_searchResults count] == 0) {
+        UILabel* noResultMsgLabel = [UILabel new];
+        noResultMsgLabel.text = @"无结果";
+        noResultMsgLabel.textAlignment = NSTextAlignmentCenter;
+        noResultMsgLabel.font = [UIFont systemFontOfSize:26];
+        noResultMsgLabel.textColor = [UIColor grayColor];
+        _searchResultsTableView.backgroundView = noResultMsgLabel;
+    }
+    else {
+        _searchResultsTableView.backgroundView = nil;
+    }
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:SVProgressHUDDidDisappearNotification object:nil];
 }
 
 #pragma mark - Navigation

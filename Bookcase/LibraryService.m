@@ -23,12 +23,10 @@
                   timeout:0
                   success:^(AFHTTPRequestOperation* operation, id responseObject) {
                       NSMutableArray* hotWords = [NSMutableArray new];
-                      IGHTMLDocument* html =
-                      [[IGHTMLDocument alloc] initWithHTMLData:responseObject encoding:@"utf8" error:nil];
-                      [[html queryWithXPath:@"//a"]
-                       enumerateNodesUsingBlock:^(IGXMLNode* content, NSUInteger idx, BOOL* stop) {
-                           [hotWords addObject:content.text];
-                       }];
+                      IGHTMLDocument* html = [[IGHTMLDocument alloc] initWithHTMLData:responseObject encoding:@"utf8" error:nil];
+                      [[html queryWithXPath:@"//a"] enumerateNodesUsingBlock:^(IGXMLNode* content, NSUInteger idx, BOOL* stop) {
+                          [hotWords addObject:content.text];
+                      }];
                       success([hotWords copy]);
                   }
                   failure:^(AFHTTPRequestOperation* operation, NSError* error){
@@ -51,21 +49,18 @@
 
     index = [index isEqualToString:@"all"] ? @"title" : index; // index == 'all'时，转为'title'
     NSString* urlString = @"http://219.223.211.171/Search/searchshowAUTO.jsp";
-    NSDictionary* parameters = @{
-                                 @"term" : key,
-                                 @"v_index" : index,
-                                 @"v_tablearray" : @"bibliosm",
-                                 @"sortfield" : @"score",
-                                 @"sorttype" : @"desc"
-                                 };
+    NSDictionary* parameters =
+    @{ @"term" : key,
+       @"v_index" : index,
+       @"v_tablearray" : @"bibliosm",
+       @"sortfield" : @"score",
+       @"sorttype" : @"desc" };
     [self requestByMethod:@"POST"
                   withURL:urlString
                parameters:parameters
                   timeout:1
                   success:^(AFHTTPRequestOperation* operation, id responseObject) {
-                      kCandidates = [NSJSONSerialization JSONObjectWithData:responseObject
-                                                                    options:NSJSONReadingMutableContainers
-                                                                      error:nil];
+                      kCandidates = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
                       success([self deduplicateObjectsOfArray:kCandidates]);
                   }
                   failure:^(AFHTTPRequestOperation* operation, NSError* error) {
@@ -100,29 +95,19 @@
                parameters:parameters
                   timeout:10
                   success:^(AFHTTPRequestOperation* operation, id responseObject) {
-                      IGHTMLDocument* html =
-                      [[IGHTMLDocument alloc] initWithHTMLData:responseObject encoding:@"utf8" error:nil];
-                      [[html queryWithXPath:@"//ul[@class='booklist']/li"] enumerateNodesUsingBlock:^(IGXMLNode* node,
-                                                                                                      NSUInteger idx,
+                      IGHTMLDocument* html = [[IGHTMLDocument alloc] initWithHTMLData:responseObject encoding:@"utf8" error:nil];
+                      [[html queryWithXPath:@"//ul[@class='booklist']/li"] enumerateNodesUsingBlock:^(IGXMLNode* node, NSUInteger idx,
                                                                                                       BOOL* stop) {
                           IGXMLNode* titleNode = [[node queryWithXPath:@"h3[@class='title']/a"] firstObject];
 
                           NSString* href = [titleNode attribute:@"href"];
                           href = [NSString stringWithFormat:@"http://219.223.211.171/Search/%@", href];
-                          NSString* title = [titleNode.text
-                                             stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+                          NSString* title = [titleNode.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 
-                          NSString* author =
-                          [[[node queryWithXPath:@"div[@class='info']/span[@class='author']"] firstObject] text];
-                          NSString* publisher =
-                          [[[node queryWithXPath:@"div[@class='info']/span[@class='publisher']"] firstObject] text];
+                          NSString* author = [[[node queryWithXPath:@"div[@class='info']/span[@class='author']"] firstObject] text];
+                          NSString* publisher = [[[node queryWithXPath:@"div[@class='info']/span[@class='publisher']"] firstObject] text];
 
-                          [searchResults addObject:@{
-                                                     @"title" : title,
-                                                     @"href" : href,
-                                                     @"author" : author,
-                                                     @"publisher" : publisher
-                                                     }];
+                          [searchResults addObject:@{ @"title" : title, @"href" : href, @"author" : author, @"publisher" : publisher }];
                       }];
                       success([searchResults copy]);
                       //                      NSLog(@"%@", searchResults);
@@ -133,9 +118,7 @@
     [self sendSearchWordByIndex:index withKey:key];
 }
 
-+ (void)getBookDetailWithUrl:(NSString*)url
-                     success:(void (^)(NSDictionary*))success
-                     failure:(void (^)(void))failure
++ (void)getBookDetailWithUrl:(NSString*)url success:(void (^)(NSDictionary*))success failure:(void (^)(void))failure
 {
     [self requestByMethod:@"GET"
                   withURL:url
@@ -147,25 +130,22 @@
                       [bookDetail setObject:[NSMutableDictionary new] forKey:@"status"];
 
                       NSMutableArray* keys = [NSMutableArray new];
-                      IGHTMLDocument* html =
-                      [[IGHTMLDocument alloc] initWithHTMLData:responseObject encoding:@"utf8" error:nil];
+                      IGHTMLDocument* html = [[IGHTMLDocument alloc] initWithHTMLData:responseObject encoding:@"utf8" error:nil];
 
                       // 基本信息
                       [[html queryWithXPath:@"//div[@class='booksinfo']"]
                        enumerateNodesUsingBlock:^(IGXMLNode* node, NSUInteger idx, BOOL* stop) {
-                           NSString* bookName = [[[[node queryWithXPath:@"h3[@class='title']"] firstObject] text]
-                                                 componentsSeparatedByString:@"/ "][0];
+                           NSString* bookName =
+                           [[[[node queryWithXPath:@"h3[@class='title']"] firstObject] text] componentsSeparatedByString:@"/ "][0];
                            [[bookDetail objectForKey:@"basic"] setObject:bookName forKey:@"书 名"];
                            [keys addObject:@"书 名"];
                        }];
                       [[html queryWithXPath:@"//div[@class='righttop']/ul/li"]
                        enumerateNodesUsingBlock:^(IGXMLNode* node, NSUInteger idx, BOOL* stop) {
-                           NSString* liText = [[node text]
-                                               stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+                           NSString* liText = [[node text] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
                            NSArray* liSplitedText = [liText componentsSeparatedByString:@"："];
                            if ([liSplitedText[0] length] > 0 && [liSplitedText[1] length] > 0) {
-                               [[bookDetail objectForKey:@"basic"] setObject:liSplitedText[1]
-                                                                      forKey:liSplitedText[0]];
+                               [[bookDetail objectForKey:@"basic"] setObject:liSplitedText[1] forKey:liSplitedText[0]];
                                [keys addObject:liSplitedText[0]];
                                [[bookDetail objectForKey:@"basic"] setObject:[keys copy] forKey:@"keys"];
                            }
@@ -179,49 +159,40 @@
                        */
                       __block NSUInteger index;
                       // 定位包含'深圳大学城图书馆'的'div.tab_4_title'，并遍历所有a子标签，确定utsz的idx
-                      [[html queryWithXPath:@"//div[@class='tab_4_title' and "
-                        @"a[contains(@title,'深圳大学城图书馆(深圳市科技图书馆)')]]/a"]
+                      [[html queryWithXPath:@"//div[@class='tab_4_title' and a[contains(@title,'深圳大学城图书馆(深圳市科技图书馆)')]]/a"]
                        enumerateNodesUsingBlock:^(IGXMLNode* node, NSUInteger idx, BOOL* stop) {
-                           if ([[node attribute:@"title"] hasPrefix:@"深圳大学城图书馆("
-                                @"深圳市科技图书馆)"]) {
+                           if ([[node attribute:@"title"] hasPrefix:@"深圳大学城图书馆(" @"深圳市科技图书馆)"]) {
                                index = idx;
                            }
                        }];
                       // 选取'div.tab_4_show'的第index子标签'div.tab_4_text'
-                      [[html queryWithXPath:@"//div[@class='tab_4_title' and "
-                        @"a[contains(@title,'深圳大学城图书馆(深圳市科技图书馆)')]]/" @"following-sibling::div[1]"]
-                       enumerateNodesUsingBlock:^(IGXMLNode* node, NSUInteger idx, BOOL* stop) {
-                           NSString* xpath =
-                           [NSString stringWithFormat:@"div[%lu]//span[@class='title_1' and "
-                            @"contains(span,'可外借馆藏')]/"
-                            @"following-sibling::table[1]//tr[position()>1]",
-                            index + 1];
-                           [[node queryWithXPath:xpath]
-                            enumerateNodesUsingBlock:^(IGXMLNode* node, NSUInteger idx, BOOL* stop) {
-                                NSMutableArray* statusInfo =
-                                [NSMutableArray new]; // 三元组(条形码，馆藏状态，流通类别)
-                                [[node queryWithXPath:@"td"]
-                                 enumerateNodesUsingBlock:^(IGXMLNode* node, NSUInteger idx, BOOL* stop) {
-                                     if (idx == 0 || idx == 3 || idx == 5) {
-                                         [statusInfo addObject:[node text]];
-                                     }
-                                 }];
-                                [status addObject:statusInfo];
-                            }];
-                       }];
+                      [[html queryWithXPath:@"//div[@class='tab_4_title' and a[contains(@title,'深圳大学城图书馆(深圳市科技图书馆)')]]/"
+                        @"following-sibling::div[1]"] enumerateNodesUsingBlock:^(IGXMLNode* node, NSUInteger idx, BOOL* stop) {
+                          NSString* xpath = [NSString stringWithFormat:@"div[%lu]//span[@class='title_1' and "
+                                             @"contains(span,'可外借馆藏')]/following-sibling::table[1]//tr[position()>1]",
+                                             index + 1];
+                          [[node queryWithXPath:xpath] enumerateNodesUsingBlock:^(IGXMLNode* node, NSUInteger idx, BOOL* stop) {
+                              NSMutableArray* statusInfo = [NSMutableArray new]; // 三元组(条形码，馆藏状态，流通类别)
+                              [[node queryWithXPath:@"td"] enumerateNodesUsingBlock:^(IGXMLNode* node, NSUInteger idx, BOOL* stop) {
+                                  if (idx == 0 || idx == 3 || idx == 5) {
+                                      [statusInfo addObject:[node text]];
+                                  }
+                              }];
+                              [status addObject:statusInfo];
+                          }];
+                      }];
                       [[bookDetail objectForKey:@"status"] setObject:[status copy] forKey:@"in"];
                       // 已借
                       [status removeAllObjects];
-                      [[html queryWithXPath:@"//div[@class='tab_4_show' and "
-                        @"div[contains(span,'已借出馆藏')]]//tr[contains(.,'深圳大学城图书馆')]"]
+                      [[html
+                        queryWithXPath:@"//div[@class='tab_4_show' and div[contains(span,'已借出馆藏')]]//tr[contains(.,'深圳大学城图书馆')]"]
                        enumerateNodesUsingBlock:^(IGXMLNode* node, NSUInteger idx, BOOL* stop) {
                            NSMutableArray* statusInfo = [NSMutableArray new]; // 二元组(条形码，借还日期)
-                           [[node queryWithXPath:@"td"]
-                            enumerateNodesUsingBlock:^(IGXMLNode* node, NSUInteger idx, BOOL* stop) {
-                                if (idx == 0 || idx == 5) {
-                                    [statusInfo addObject:[node text]];
-                                }
-                            }];
+                           [[node queryWithXPath:@"td"] enumerateNodesUsingBlock:^(IGXMLNode* node, NSUInteger idx, BOOL* stop) {
+                               if (idx == 0 || idx == 5) {
+                                   [statusInfo addObject:[node text]];
+                               }
+                           }];
                            [status addObject:statusInfo];
                        }];
                       [[bookDetail objectForKey:@"status"] setObject:[status copy] forKey:@"out"];

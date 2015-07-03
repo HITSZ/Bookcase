@@ -66,8 +66,8 @@ enum { BASIC_SECTION = 0, STATUS_SECTION };
 - (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
     if (_bFetchDataFailed) {
-        UILabel* hintMsgLabel = [[UILabel alloc]
-                                 initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
+        UILabel* hintMsgLabel =
+        [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
         hintMsgLabel.text = @"点击屏幕重新加载";
         hintMsgLabel.textAlignment = NSTextAlignmentCenter;
         hintMsgLabel.font = [UIFont systemFontOfSize:26];
@@ -76,9 +76,7 @@ enum { BASIC_SECTION = 0, STATUS_SECTION };
         self.tableView.backgroundView = hintMsgLabel;
 
         hintMsgLabel.userInteractionEnabled = YES;
-        [hintMsgLabel
-         addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self
-                                                                      action:@selector(fetchBookDetail)]];
+        [hintMsgLabel addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(fetchBookDetail)]];
     }
 
     return [_bookDetail count];
@@ -118,8 +116,7 @@ enum { BASIC_SECTION = 0, STATUS_SECTION };
         case BASIC_SECTION: {
             UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"bookBasicDetailCell"];
             if (cell == nil) {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
-                                              reuseIdentifier:@"bookBasicDetailCell"];
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"bookBasicDetailCell"];
             }
             cell.textLabel.text = _bookDetail[@"basic"][@"keys"][indexPath.row];
             cell.detailTextLabel.text = _bookDetail[@"basic"][cell.textLabel.text];
@@ -139,8 +136,7 @@ enum { BASIC_SECTION = 0, STATUS_SECTION };
                 cell.otherInfoLabel.text = _bookDetail[@"status"][@"out"][indexPath.row - inCount][1];
                 cell.statusLabel.text = @"借出";
                 cell.otherLabel.text = @"应还日期";
-                cell.barcodeLabel.textColor = cell.statusLabel.textColor = cell.otherLabel.textColor =
-                [UIColor lightGrayColor];
+                cell.barcodeLabel.textColor = cell.statusLabel.textColor = cell.otherLabel.textColor = [UIColor lightGrayColor];
             }
             return cell;
         }

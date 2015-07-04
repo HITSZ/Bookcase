@@ -13,8 +13,7 @@
 
 @implementation LibraryService
 
-+ (void)getHotSearchWordsByIndex:(NSString*)index success:(void (^)(NSArray*))success
-{
++ (void)getHotSearchWordsByIndex:(NSString*)index success:(void (^)(NSArray*))success {
     NSString* urlString = @"http://219.223.211.171/Search/gethotword.jsp";
     NSDictionary* parameters = @{ @"v_index" : index };
     [self requestByMethod:@"GET"
@@ -37,30 +36,30 @@
 + (void)getSearchWordCandidatesByIndex:(NSString*)index
                                withKey:(NSString*)key
                                success:(void (^)(NSArray*))success
-                               failure:(void (^)(void))failure
-{
+                               failure:(void (^)(void))failure {
     __block NSArray* kCandidates = [NSArray new];
     key = [key stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 
-    if ([key length] == 0) { // 搜索词为空时直接返回空数组
+    if ([key length] == 0) {  // 搜索词为空时直接返回空数组
         success(kCandidates);
         return;
     }
 
-    index = [index isEqualToString:@"all"] ? @"title" : index; // index == 'all'时，转为'title'
+    index = [index isEqualToString:@"all"] ? @"title" : index;  // index == 'all'时，转为'title'
     NSString* urlString = @"http://219.223.211.171/Search/searchshowAUTO.jsp";
-    NSDictionary* parameters =
-    @{ @"term" : key,
-       @"v_index" : index,
-       @"v_tablearray" : @"bibliosm",
-       @"sortfield" : @"score",
-       @"sorttype" : @"desc" };
+    NSDictionary* parameters = @{ @"term" : key,
+                                  @"v_index" : index,
+                                  @"v_tablearray" : @"bibliosm",
+                                  @"sortfield" : @"score",
+                                  @"sorttype" : @"desc" };
     [self requestByMethod:@"POST"
                   withURL:urlString
                parameters:parameters
                   timeout:1
                   success:^(AFHTTPRequestOperation* operation, id responseObject) {
-                      kCandidates = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+                      kCandidates = [NSJSONSerialization JSONObjectWithData:responseObject
+                                                                    options:NSJSONReadingMutableContainers
+                                                                      error:nil];
                       success([self deduplicateObjectsOfArray:kCandidates]);
                   }
                   failure:^(AFHTTPRequestOperation* operation, NSError* error) {
@@ -71,8 +70,7 @@
 + (void)searchBookByIndex:(NSString*)index
                   withKey:(NSString*)key
                   success:(void (^)(NSArray*))success
-                  failure:(void (^)(NSInteger))failure
-{
+                  failure:(void (^)(NSInteger))failure {
     NSMutableArray* searchResults = [NSMutableArray new];
     key = [key stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 
@@ -82,22 +80,19 @@
     }
 
     NSString* urlString = @"http://219.223.211.171/Search/searchshow.jsp";
-    NSDictionary* parameters = @{
-                                 @"v_value" : key,
-                                 @"v_index" : index,
-                                 @"v_tablearray" : @"bibliosm",
-                                 @"sortfield" : @"score",
-                                 @"sorttype" : @"desc",
-                                 @"library" : @"F44010"
-                                 };
+    NSDictionary* parameters = @{ @"v_value" : key,
+                                  @"v_index" : index,
+                                  @"v_tablearray" : @"bibliosm",
+                                  @"sortfield" : @"score",
+                                  @"sorttype" : @"desc",
+                                  @"library" : @"F44010" };
     [self requestByMethod:@"GET"
                   withURL:urlString
                parameters:parameters
                   timeout:10
                   success:^(AFHTTPRequestOperation* operation, id responseObject) {
                       IGHTMLDocument* html = [[IGHTMLDocument alloc] initWithHTMLData:responseObject encoding:@"utf8" error:nil];
-                      [[html queryWithXPath:@"//ul[@class='booklist']/li"] enumerateNodesUsingBlock:^(IGXMLNode* node, NSUInteger idx,
-                                                                                                      BOOL* stop) {
+                      [[html queryWithXPath:@"//ul[@class='booklist']/li"] enumerateNodesUsingBlock:^(IGXMLNode* node, NSUInteger idx, BOOL* stop) {
                           IGXMLNode* titleNode = [[node queryWithXPath:@"h3[@class='title']/a"] firstObject];
 
                           NSString* href = [titleNode attribute:@"href"];
@@ -110,7 +105,7 @@
                           [searchResults addObject:@{ @"title" : title, @"href" : href, @"author" : author, @"publisher" : publisher }];
                       }];
                       success([searchResults copy]);
-                      //                      NSLog(@"%@", searchResults);
+                      // NSLog(@"%@", searchResults);
                   }
                   failure:^(AFHTTPRequestOperation* operation, NSError* error) {
                       failure(error.code);
@@ -118,8 +113,9 @@
     [self sendSearchWordByIndex:index withKey:key];
 }
 
-+ (void)getBookDetailWithUrl:(NSString*)url success:(void (^)(NSDictionary*))success failure:(void (^)(void))failure
-{
++ (void)getBookDetailWithUrl:(NSString*)url
+                     success:(void (^)(NSDictionary*))success
+                     failure:(void (^)(void))failure {
     [self requestByMethod:@"GET"
                   withURL:url
                parameters:nil
@@ -133,23 +129,20 @@
                       IGHTMLDocument* html = [[IGHTMLDocument alloc] initWithHTMLData:responseObject encoding:@"utf8" error:nil];
 
                       // 基本信息
-                      [[html queryWithXPath:@"//div[@class='booksinfo']"]
-                       enumerateNodesUsingBlock:^(IGXMLNode* node, NSUInteger idx, BOOL* stop) {
-                           NSString* bookName =
-                           [[[[node queryWithXPath:@"h3[@class='title']"] firstObject] text] componentsSeparatedByString:@"/ "][0];
-                           [[bookDetail objectForKey:@"basic"] setObject:bookName forKey:@"书 名"];
-                           [keys addObject:@"书 名"];
-                       }];
-                      [[html queryWithXPath:@"//div[@class='righttop']/ul/li"]
-                       enumerateNodesUsingBlock:^(IGXMLNode* node, NSUInteger idx, BOOL* stop) {
-                           NSString* liText = [[node text] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-                           NSArray* liSplitedText = [liText componentsSeparatedByString:@"："];
-                           if ([liSplitedText[0] length] > 0 && [liSplitedText[1] length] > 0) {
-                               [[bookDetail objectForKey:@"basic"] setObject:liSplitedText[1] forKey:liSplitedText[0]];
-                               [keys addObject:liSplitedText[0]];
-                               [[bookDetail objectForKey:@"basic"] setObject:[keys copy] forKey:@"keys"];
-                           }
-                       }];
+                      [[html queryWithXPath:@"//div[@class='booksinfo']"] enumerateNodesUsingBlock:^(IGXMLNode* node, NSUInteger idx, BOOL* stop) {
+                          NSString* bookName = [[[[node queryWithXPath:@"h3[@class='title']"] firstObject] text] componentsSeparatedByString:@"/ "][0];
+                          [[bookDetail objectForKey:@"basic"] setObject:bookName forKey:@"书 名"];
+                          [keys addObject:@"书 名"];
+                      }];
+                      [[html queryWithXPath:@"//div[@class='righttop']/ul/li"] enumerateNodesUsingBlock:^(IGXMLNode* node, NSUInteger idx, BOOL* stop) {
+                          NSString* liText = [[node text] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+                          NSArray* liSplitedText = [liText componentsSeparatedByString:@"："];
+                          if ([liSplitedText[0] length] > 0 && [liSplitedText[1] length] > 0) {
+                              [[bookDetail objectForKey:@"basic"] setObject:liSplitedText[1] forKey:liSplitedText[0]];
+                              [keys addObject:liSplitedText[0]];
+                              [[bookDetail objectForKey:@"basic"] setObject:[keys copy] forKey:@"keys"];
+                          }
+                      }];
 
                       // 馆藏情况
                       // 在馆
@@ -166,26 +159,25 @@
                            }
                        }];
                       // 选取'div.tab_4_show'的第index子标签'div.tab_4_text'
-                      [[html queryWithXPath:@"//div[@class='tab_4_title' and a[contains(@title,'深圳大学城图书馆(深圳市科技图书馆)')]]/"
-                        @"following-sibling::div[1]"] enumerateNodesUsingBlock:^(IGXMLNode* node, NSUInteger idx, BOOL* stop) {
-                          NSString* xpath = [NSString stringWithFormat:@"div[%lu]//span[@class='title_1' and "
-                                             @"contains(span,'可外借馆藏')]/following-sibling::table[1]//tr[position()>1]",
-                                             index + 1];
-                          [[node queryWithXPath:xpath] enumerateNodesUsingBlock:^(IGXMLNode* node, NSUInteger idx, BOOL* stop) {
-                              NSMutableArray* statusInfo = [NSMutableArray new]; // 三元组(条形码，馆藏状态，流通类别)
-                              [[node queryWithXPath:@"td"] enumerateNodesUsingBlock:^(IGXMLNode* node, NSUInteger idx, BOOL* stop) {
-                                  if (idx == 0 || idx == 3 || idx == 5) {
-                                      [statusInfo addObject:[node text]];
-                                  }
-                              }];
-                              [status addObject:statusInfo];
-                          }];
-                      }];
+                      [[html queryWithXPath:@"//div[@class='tab_4_title' and a[contains(@title,'深圳大学城图书馆(深圳市科技图书馆)')]]/following-sibling::div[1]"]
+                       enumerateNodesUsingBlock:^(IGXMLNode* node, NSUInteger idx, BOOL* stop) {
+                           NSString* xpath = [NSString stringWithFormat:
+                                              @"div[%lu]//span[@class='title_1' and contains(span,'可外借馆藏')]/following-sibling::table[1]//tr[position()>1]",
+                                              (unsigned long)(index + 1)];
+                           [[node queryWithXPath:xpath] enumerateNodesUsingBlock:^(IGXMLNode* node, NSUInteger idx, BOOL* stop) {
+                               NSMutableArray* statusInfo = [NSMutableArray new]; // 三元组(条形码，馆藏状态，流通类别)
+                               [[node queryWithXPath:@"td"] enumerateNodesUsingBlock:^(IGXMLNode* node, NSUInteger idx, BOOL* stop) {
+                                   if (idx == 0 || idx == 3 || idx == 5) {
+                                       [statusInfo addObject:[node text]];
+                                   }
+                               }];
+                               [status addObject:statusInfo];
+                           }];
+                       }];
                       [[bookDetail objectForKey:@"status"] setObject:[status copy] forKey:@"in"];
                       // 已借
                       [status removeAllObjects];
-                      [[html
-                        queryWithXPath:@"//div[@class='tab_4_show' and div[contains(span,'已借出馆藏')]]//tr[contains(.,'深圳大学城图书馆')]"]
+                      [[html queryWithXPath:@"//div[@class='tab_4_show' and div[contains(span,'已借出馆藏')]]//tr[contains(.,'深圳大学城图书馆')]"]
                        enumerateNodesUsingBlock:^(IGXMLNode* node, NSUInteger idx, BOOL* stop) {
                            NSMutableArray* statusInfo = [NSMutableArray new]; // 二元组(条形码，借还日期)
                            [[node queryWithXPath:@"td"] enumerateNodesUsingBlock:^(IGXMLNode* node, NSUInteger idx, BOOL* stop) {
@@ -196,7 +188,7 @@
                            [status addObject:statusInfo];
                        }];
                       [[bookDetail objectForKey:@"status"] setObject:[status copy] forKey:@"out"];
-                      //                      NSLog(@"%@", bookDetail);
+                      // NSLog(@"%@", bookDetail);
                       success([bookDetail copy]);
                   }
                   failure:^(AFHTTPRequestOperation* operation, NSError* error) {
@@ -204,10 +196,10 @@
                   }];
 }
 
-+ (void)sendSearchWordByIndex:(NSString*)index withKey:(NSString*)key
-{
++ (void)sendSearchWordByIndex:(NSString*)index withKey:(NSString*)key {
     NSString* urlString = @"http://219.223.211.171/Search/hotword.jsp";
-    NSDictionary* parameters = @{ @"v_index" : index, @"v_value" : key };
+    NSDictionary* parameters = @{ @"v_index" : index,
+                                  @"v_value" : key };
     [self requestByMethod:@"POST"
                   withURL:urlString
                parameters:parameters
@@ -225,10 +217,8 @@
              parameters:(NSDictionary*)parameters
                 timeout:(int)seconds
                 success:(void (^)(AFHTTPRequestOperation* operation, id responseObject))success
-                failure:(void (^)(AFHTTPRequestOperation* operation, NSError* error))failure
-{
-    if (parameters) {
-        // 过滤v_value中的关键词，根据网页中js代码得知
+                failure:(void (^)(AFHTTPRequestOperation* operation, NSError* error))failure {
+    if (parameters) {  // 过滤v_value中的关键词，根据网页中js代码得知
         NSMutableDictionary* paras = [parameters mutableCopy];
         NSString* v_value = [paras objectForKey:@"v_value"];
         if (v_value) {
@@ -253,8 +243,7 @@
                   failure(operation, error);
                   NSLog(@"\n----POST----\n%s\n%@\n%@\n------------", __func__, parameters, error);
               }];
-    }
-    else {
+    } else {
         [manager GET:url
           parameters:parameters
              success:^(AFHTTPRequestOperation* operation, id responseObject) {
@@ -274,37 +263,34 @@
  *
  *  @return 过滤后的字符串
  */
-+ (NSString*)filterString:(NSString*)origin
-{
-    NSArray* filterWords = @[
-                             @"'",
-                             @"\"",
-                             @"\\\'",
-                             @"\\\"",
-                             @"\\)",
-                             @"\\*",
-                             @";",
-                             @"<",
-                             @">",
-                             @"%",
-                             @"\\(",
-                             @"\\|",
-                             @"&",
-                             @"\\+",
-                             @"$",
-                             @"@",
-                             @"\r",
-                             @"\n",
-                             @",",
-                             @"select ",
-                             @" and ",
-                             @" in ",
-                             @" or ",
-                             @"insert ",
-                             @"delete ",
-                             @"update ",
-                             @"drop "
-                             ];
++ (NSString*)filterString:(NSString*)origin {
+    NSArray* filterWords = @[ @"'",
+                              @"\"",
+                              @"\\\'",
+                              @"\\\"",
+                              @"\\)",
+                              @"\\*",
+                              @";",
+                              @"<",
+                              @">",
+                              @"%",
+                              @"\\(",
+                              @"\\|",
+                              @"&",
+                              @"\\+",
+                              @"$",
+                              @"@",
+                              @"\r",
+                              @"\n",
+                              @",",
+                              @"select ",
+                              @" and ",
+                              @" in ",
+                              @" or ",
+                              @"insert ",
+                              @"delete ",
+                              @"update ",
+                              @"drop " ];
     for (NSString* word in filterWords) {
         origin = [origin stringByReplacingOccurrencesOfString:word withString:@" "];
     }

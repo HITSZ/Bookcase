@@ -14,19 +14,16 @@
 
 @interface BookDetailTableViewController ()
 
-@property (nonatomic, strong) NSDictionary* bookDetail;
+@property(nonatomic, strong) NSDictionary* bookDetail;
 @property BOOL bFetchDataFailed;
 
 @end
 
 @implementation BookDetailTableViewController
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
 
-    // Uncomment the following line to preserve selection between presentations.
-    //     self.clearsSelectionOnViewWillAppear = NO;
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reloadData)
                                                  name:SVProgressHUDDidDisappearNotification
@@ -34,8 +31,7 @@
     [self fetchBookDetail];
 }
 
-- (void)fetchBookDetail
-{
+- (void)fetchBookDetail {
     self.tableView.backgroundView = nil;
     [SVProgressHUD showWithStatus:@"正在加载..." maskType:SVProgressHUDMaskTypeBlack];
     [LibraryService getBookDetailWithUrl:self.url
@@ -51,23 +47,23 @@
                                  }];
 }
 
-- (void)reloadData { [self.tableView reloadData]; }
+- (void)reloadData {
+    [self.tableView reloadData];
+}
 
-enum { BASIC_SECTION = 0, STATUS_SECTION };
+enum { BASIC_SECTION = 0,
+    STATUS_SECTION };
 
 #pragma mark - Table view delegate
-- (CGFloat)tableView:(UITableView*)tableView heightForHeaderInSection:(NSInteger)section
-{
+- (CGFloat)tableView:(UITableView*)tableView heightForHeaderInSection:(NSInteger)section {
     return section == BASIC_SECTION ? 10 : UITableViewAutomaticDimension;
 }
 
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
-{
+- (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView {
     if (_bFetchDataFailed) {
-        UILabel* hintMsgLabel =
-        [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
+        UILabel* hintMsgLabel = [UILabel new];
         hintMsgLabel.text = @"点击屏幕重新加载";
         hintMsgLabel.textAlignment = NSTextAlignmentCenter;
         hintMsgLabel.font = [UIFont systemFontOfSize:26];
@@ -76,20 +72,20 @@ enum { BASIC_SECTION = 0, STATUS_SECTION };
         self.tableView.backgroundView = hintMsgLabel;
 
         hintMsgLabel.userInteractionEnabled = YES;
-        [hintMsgLabel addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(fetchBookDetail)]];
+        [hintMsgLabel addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                                   action:@selector(fetchBookDetail)]];
     }
 
     return [_bookDetail count];
 }
 
-- (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
-{
+- (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section {
     switch (section) {
         case STATUS_SECTION: {
             NSUInteger left = [_bookDetail[@"status"][@"in"] count];
             NSUInteger total = left + [_bookDetail[@"status"][@"out"] count];
             if (total) {
-                return [NSString stringWithFormat:@"馆藏 %lu/%lu", left, total];
+                return [NSString stringWithFormat:@"馆藏 %lu/%lu", (unsigned long)left, (unsigned long)total];
             }
             return nil;
         }
@@ -98,8 +94,7 @@ enum { BASIC_SECTION = 0, STATUS_SECTION };
     }
 }
 
-- (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
-{
+- (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section {
     switch (section) {
         case BASIC_SECTION:
             return [_bookDetail[@"basic"][@"keys"] count];
@@ -110,8 +105,7 @@ enum { BASIC_SECTION = 0, STATUS_SECTION };
     }
 }
 
-- (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
-{
+- (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath {
     switch (indexPath.section) {
         case BASIC_SECTION: {
             UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"bookBasicDetailCell"];
@@ -123,15 +117,15 @@ enum { BASIC_SECTION = 0, STATUS_SECTION };
             return cell;
         }
         case STATUS_SECTION: {
-            BookStatusTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"bookStatusCell"];
+            BookStatusTableViewCell* cell =
+            [tableView dequeueReusableCellWithIdentifier:@"bookStatusCell"];
             NSInteger inCount = [_bookDetail[@"status"][@"in"] count];
             if (indexPath.row < inCount) {
                 cell.barcodeInfoLabel.text = _bookDetail[@"status"][@"in"][indexPath.row][0];
                 cell.statusLabel.text = _bookDetail[@"status"][@"in"][indexPath.row][1];
                 cell.otherInfoLabel.text = _bookDetail[@"status"][@"in"][indexPath.row][2];
                 cell.otherLabel.text = @"流通类别";
-            }
-            else {
+            } else {
                 cell.barcodeInfoLabel.text = _bookDetail[@"status"][@"out"][indexPath.row - inCount][0];
                 cell.otherInfoLabel.text = _bookDetail[@"status"][@"out"][indexPath.row - inCount][1];
                 cell.statusLabel.text = @"借出";

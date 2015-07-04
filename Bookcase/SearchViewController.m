@@ -13,13 +13,13 @@
 
 #import "SVProgressHUD.h"
 
-@interface SearchViewController () <UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
+@interface SearchViewController () <UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate>
 
-@property (weak, nonatomic) IBOutlet UIView* hotSearchView;
-@property (weak, nonatomic) IBOutlet UITableView* searchResultsTableView;
-@property (weak, nonatomic) IBOutlet UISearchBar* searchBar;
+@property(weak, nonatomic) IBOutlet UIView* hotSearchView;
+@property(weak, nonatomic) IBOutlet UITableView* searchResultsTableView;
+@property(weak, nonatomic) IBOutlet UISearchBar* searchBar;
 
-@property (weak, nonatomic) UITableView* searchWordCandidatesTableView;
+@property(weak, nonatomic) UITableView* searchWordCandidatesTableView;
 @property NSArray* kCandidates;
 @property NSMutableArray* searchResults;
 @property NSString* lastSearchString;
@@ -28,8 +28,7 @@
 
 @implementation SearchViewController
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
 
     _kCandidates = [NSArray new];
@@ -37,35 +36,31 @@
     _searchWordCandidatesTableView = self.searchDisplayController.searchResultsTableView;
 
     UITextField* sbTextField = [_searchBar valueForKey:@"_searchField"];
-    sbTextField.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0]; // 改变搜索文本框的背景色
+    sbTextField.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];  // 改变搜索文本框的背景色
     self.navigationController.view.backgroundColor = [UIColor whiteColor];
 
-    [LibraryService getHotSearchWordsByIndex:@"all"
-                                     success:^(NSArray* hotWords) {
-                                         [self hotSearchWordsLabelDidInsert:hotWords];
-                                     }];
     [self setHotSearchViewHidden:NO];
 
-    [_searchResultsTableView setTableFooterView:[UIView new]]; // 不显示多余的空表格
+    [_searchResultsTableView setTableFooterView:[UIView new]];  // 不显示多余的空表格
     [_searchWordCandidatesTableView setTableFooterView:[UIView new]];
+
+    [LibraryService getHotSearchWordsByIndex:@"all" success:^(NSArray* hotWords) {
+        [self hotSearchWordsLabelDidInsert:hotWords];
+    }];
 }
 
-- (void)setHotSearchViewHidden:(BOOL)hidden
-{
+#pragma mark - Display View Switch
+- (void)setHotSearchViewHidden:(BOOL)hidden {
     [_hotSearchView setHidden:hidden];
     [_searchResultsTableView setHidden:!hidden];
 }
 
-#pragma mark - HotWordsAcquire
-- (void)hotSearchWordsLabelDidInsert:(NSArray*)hotWords
-{
+#pragma mark - Utils
+- (void)hotSearchWordsLabelDidInsert:(NSArray*)hotWords {
     int word_displayed_num;
-    if ([[UIScreen mainScreen] bounds].size.height >= 568) {
-        // >= 4-inch screen (iPhone 5/5S, 6/6+)
+    if ([[UIScreen mainScreen] bounds].size.height >= 568) {  // >= 4-inch screen (iPhone 5/5S, 6/6+)
         word_displayed_num = 10;
-    }
-    else {
-        // 3.5-inch screen (iPhone 4S)
+    } else {  // 3.5-inch screen (iPhone 4S)
         word_displayed_num = 8;
     }
 
@@ -100,10 +95,9 @@
         // an simple animation
         label.alpha = 0.0;
         [_hotSearchView addSubview:label];
-        [UIView animateWithDuration:0.1 * i
-                         animations:^{
-                             label.alpha = 1.0;
-                         }];
+        [UIView animateWithDuration:0.1 * i animations:^{
+            label.alpha = 1.0;
+        }];
 
         label.translatesAutoresizingMaskIntoConstraints = NO;
         [_hotSearchView addConstraint:[NSLayoutConstraint constraintWithItem:label
@@ -123,37 +117,34 @@
 
         // Capture label tap event.
         label.userInteractionEnabled = true;
-        [label addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hotSearchWordLabelDidTap:)]];
+        [label addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                            action:@selector(hotSearchWordLabelDidTap:)]];
     }
 }
 
-- (void)hotSearchWordLabelDidTap:(UITapGestureRecognizer*)sender
-{
+- (void)hotSearchWordLabelDidTap:(UITapGestureRecognizer*)sender {
     UILabel* touchedLabel = (UILabel*)sender.view;
     _searchBar.text = [touchedLabel text];
     [_searchBar becomeFirstResponder];
 }
 
 #pragma mark - UISearchBarDelegate
-- (void)searchBarTextDidEndEditing:(UISearchBar*)searchBar
-{
-    if ([[searchBar text] length] == 0) { // 完成输入后,searchDisplayController状态设置为inactive
+- (void)searchBarTextDidEndEditing:(UISearchBar*)searchBar {
+    if ([[searchBar text] length] == 0) {  // 完成输入后,searchDisplayController状态设置为inactive
         [self.searchDisplayController setActive:false animated:true];
     }
 }
 
-- (void)searchBar:(UISearchBar*)searchBar textDidChange:(NSString*)searchText
-{
+- (void)searchBar:(UISearchBar*)searchBar textDidChange:(NSString*)searchText {
     if ([searchText length] == 0) {
         [self setHotSearchViewHidden:NO];
     }
 }
 
-- (BOOL)searchDisplayController:(UISearchDisplayController*)controller shouldReloadTableForSearchString:(NSString*)searchString
-{
-    if ([_lastSearchString isEqualToString:searchString] == NO) {
+- (BOOL)searchDisplayController:(UISearchDisplayController*)controller shouldReloadTableForSearchString:(NSString*)searchString {
+    if (![_lastSearchString isEqualToString:searchString]) {
         NSLog(@"%s%@", __func__, searchString);
-        _kCandidates = @[ searchString ]; // 搜索建议列表初始化为搜索词，再利用网络获取搜索建议列表进行更新
+        _kCandidates = @[ searchString ];  // 搜索建议列表初始化为搜索词，再利用网络获取搜索建议列表进行更新
         [LibraryService getSearchWordCandidatesByIndex:@"all"
                                                withKey:searchString
                                                success:^(NSArray* kCandidates) {
@@ -168,21 +159,20 @@
     return NO;
 }
 
-- (void)searchBarSearchButtonClicked:(UISearchBar*)searchBar { [self doSearchWithKey:searchBar.text]; }
+- (void)searchBarSearchButtonClicked:(UISearchBar*)searchBar {
+    [self doSearchWithKey:searchBar.text];
+}
 
 #pragma mark - UITableViewDataSource
-- (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
-{
+- (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section {
     if (tableView == _searchWordCandidatesTableView) {
         return [_kCandidates count];
-    }
-    else {
+    } else {
         return [_searchResults count];
     }
 }
 
-- (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
-{
+- (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath {
     if (tableView == _searchWordCandidatesTableView) {
         UITableViewCell* cell = [_searchWordCandidatesTableView dequeueReusableCellWithIdentifier:@"kCandidateListCell"];
         if (cell == nil) {
@@ -190,8 +180,7 @@
         }
         cell.textLabel.text = [_kCandidates objectAtIndex:indexPath.row];
         return cell;
-    }
-    else {
+    } else {
         BookListTableViewCell* cell = [_searchResultsTableView dequeueReusableCellWithIdentifier:@"bookListCell"];
         NSDictionary* item = [_searchResults objectAtIndex:indexPath.row];
         cell.titleLabel.text = [item objectForKey:@"title"];
@@ -201,16 +190,14 @@
     }
 }
 
-- (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
-{
+- (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath {
     if (tableView == _searchWordCandidatesTableView) {
         [self doSearchWithKey:[tableView cellForRowAtIndexPath:indexPath].textLabel.text];
     }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-- (UIView*)tableView:(UITableView*)tableView viewForHeaderInSection:(NSInteger)section
-{
+- (UIView*)tableView:(UITableView*)tableView viewForHeaderInSection:(NSInteger)section {
     if (tableView == _searchWordCandidatesTableView) {
         UIView* headerView = [UIView new];
         UILabel* headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, 0, 0)];
@@ -224,31 +211,27 @@
     return nil;
 }
 
-- (CGFloat)tableView:(UITableView*)tableView heightForHeaderInSection:(NSInteger)section
-{
+- (CGFloat)tableView:(UITableView*)tableView heightForHeaderInSection:(NSInteger)section {
     if (tableView == _searchWordCandidatesTableView) {
         return 14.5;
     }
     return CGFLOAT_MIN;
 }
 
-- (void)scrollViewDidScroll:(UIScrollView*)scrollView
-{
+- (void)scrollViewDidScroll:(UIScrollView*)scrollView {
     if (scrollView == (UIScrollView*)_searchWordCandidatesTableView) {
         CGFloat sectionHeaderHeight = [self tableView:_searchWordCandidatesTableView heightForHeaderInSection:0];
         if (scrollView.contentOffset.y >= -64 && scrollView.contentOffset.y <= -64 + sectionHeaderHeight) {
             scrollView.contentInset = UIEdgeInsetsMake(-scrollView.contentOffset.y, 0, scrollView.contentInset.bottom, 0);
-        }
-        else if (scrollView.contentOffset.y > -64 + sectionHeaderHeight) {
+        } else if (scrollView.contentOffset.y > -64 + sectionHeaderHeight) {
             scrollView.contentInset = UIEdgeInsetsMake(64 - sectionHeaderHeight, 0, scrollView.contentInset.bottom, 0);
         }
     }
 }
 
 #pragma mark -
-- (void)doSearchWithKey:(NSString*)key
-{
-    [_searchResults removeAllObjects]; // 搜索前清空结果列表
+- (void)doSearchWithKey:(NSString*)key {
+    [_searchResults removeAllObjects];  // 搜索前清空结果列表
     if ([key length]) {
         [SVProgressHUD showWithStatus:@"正在搜索..." maskType:SVProgressHUDMaskTypeBlack];
         [_searchBar resignFirstResponder];
@@ -267,18 +250,16 @@
                                       [SVProgressHUD dismiss];
                                   }
                                   failure:^(NSInteger statusCode) {
-                                      if (statusCode == -1001) { // timeout
+                                      if (statusCode == -1001) {  // timeout
                                           [SVProgressHUD showInfoWithStatus:@"网络慢如蜗牛喔-_-!" maskType:SVProgressHUDMaskTypeBlack];
-                                      }
-                                      else {
+                                      } else {
                                           [SVProgressHUD showErrorWithStatus:@"网络出错啦~" maskType:SVProgressHUDMaskTypeBlack];
                                       }
                                   }];
     }
 }
 
-- (void)searchDoneWithSuccess
-{
+- (void)searchDoneWithSuccess {
     if ([_searchResults count] == 0) {
         UILabel* noResultMsgLabel = [UILabel new];
         noResultMsgLabel.text = @"无结果";
@@ -286,17 +267,17 @@
         noResultMsgLabel.font = [UIFont systemFontOfSize:26];
         noResultMsgLabel.textColor = [UIColor grayColor];
         _searchResultsTableView.backgroundView = noResultMsgLabel;
-    }
-    else {
+    } else {
         _searchResultsTableView.backgroundView = nil;
     }
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:SVProgressHUDDidDisappearNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:SVProgressHUDDidDisappearNotification
+                                                  object:nil];
 }
 
 #pragma mark - Navigation
 
-- (void)prepareForSegue:(UIStoryboardSegue*)segue sender:(id)sender
-{
+- (void)prepareForSegue:(UIStoryboardSegue*)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"BookDetail"]) {
         BookDetailTableViewController* bookDetailTVC = [segue destinationViewController];
         bookDetailTVC.url = [[_searchResults objectAtIndex:_searchResultsTableView.indexPathForSelectedRow.row] objectForKey:@"href"];

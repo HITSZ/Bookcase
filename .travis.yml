@@ -1,2 +1,1 @@
 language: objective-c
-script: xctool -workspace Bookcase.xcworkspace -scheme Bookcase

@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/UTSZ/Bookcase.svg?branch=master)](https://travis-ci.org/UTSZ/Bookcase)  
 『书架』- 深圳大学城图书馆iOS客户端
 
 ## 截图

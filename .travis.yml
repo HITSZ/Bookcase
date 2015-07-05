@@ -1,3 +1,5 @@
 language: objective-c
 xcode_workspace: Bookcase.xcworkspace
 xcode_scheme: Bookcase
+xcode_sdk: iphonesimulator
+script: xctool -workspace Bookcase.xcworkspace -scheme Bookcase clean build CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO

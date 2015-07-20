@@ -3,17 +3,17 @@
     {
       "idiom" : "iphone",
       "scale" : "1x",
-      "filename" : "user@1x.png"
+      "filename" : "me.png"
     },
     {
       "idiom" : "iphone",
       "scale" : "2x",
-      "filename" : "user@2x.png"
+      "filename" : "me@2x.png"
     },
     {
       "idiom" : "iphone",
       "scale" : "3x",
-      "filename" : "user@3x.png"
+      "filename" : "me@3x.png"
     },
     {
       "idiom" : "ipad",

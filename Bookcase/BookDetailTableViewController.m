@@ -11,11 +11,17 @@
 #import "BookStatusTableViewCell.h"
 
 #import "SVProgressHUD.h"
+#import "MyStarBooks.h"
+
+static NSString* const kStarImageName = @"Star";
+static NSString* const kStarFilledImageName = @"Star Filled";
 
 @interface BookDetailTableViewController ()
 
+@property(weak, nonatomic) IBOutlet UIBarButtonItem* starButton;
+
 @property(nonatomic, strong) NSDictionary* bookDetail;
-@property BOOL bFetchDataFailed;
+@property(nonatomic, assign) BOOL bFetchDataFailed;
 
 @end
 
@@ -23,8 +29,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
+    [[NSNotificationCenter defaultCenter] addObserver:self.tableView
                                              selector:@selector(reloadData)
                                                  name:SVProgressHUDDidDisappearNotification
                                                object:nil];
@@ -39,16 +44,13 @@
                                      _bookDetail = bookDetail;
                                      _bFetchDataFailed = NO;
                                      [SVProgressHUD dismiss];
+                                     [self updateStarButtonStatus];
                                  }
                                  failure:^{
                                      _bookDetail = [NSDictionary new];
                                      _bFetchDataFailed = YES;
                                      [SVProgressHUD showErrorWithStatus:@"网络异常:-P" maskType:SVProgressHUDMaskTypeBlack];
                                  }];
-}
-
-- (void)reloadData {
-    [self.tableView reloadData];
 }
 
 enum { BASIC_SECTION = 0,
@@ -136,6 +138,27 @@ enum { BASIC_SECTION = 0,
         }
         default:
             return nil;
+    }
+}
+
+#pragma mark - IB Actions
+- (IBAction)starButtonClicked:(id)sender {
+    NSString* isbn = _bookDetail[@"basic"][@"ISBN"];
+    if ([MyStarBooks hasBook:isbn]) {
+        [MyStarBooks removeBook:isbn];
+        [SVProgressHUD showErrorWithStatus:@"取消收藏" maskType:SVProgressHUDMaskTypeBlack];
+    } else {
+        [MyStarBooks addBookWithName:_bookDetail[@"basic"][@"书 名"] isbn:isbn url:_url];
+        [SVProgressHUD showSuccessWithStatus:@"收藏成功" maskType:SVProgressHUDMaskTypeBlack];
+    }
+    [self updateStarButtonStatus];
+}
+
+- (void)updateStarButtonStatus {
+    if ([MyStarBooks hasBook:_bookDetail[@"basic"][@"ISBN"]]) {
+        self.starButton.image = [UIImage imageNamed:kStarFilledImageName];
+    } else {
+        self.starButton.image = [UIImage imageNamed:kStarImageName];
     }
 }
 

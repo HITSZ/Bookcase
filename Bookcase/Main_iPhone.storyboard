@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="8wB-a6-VIh">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="8wB-a6-VIh">
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -213,8 +212,17 @@
                             <outlet property="delegate" destination="ecI-OX-Zk9" id="HS8-cI-Dce"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="详细内容" id="iHG-Mx-ZZb"/>
+                    <navigationItem key="navigationItem" title="详细内容" id="iHG-Mx-ZZb">
+                        <barButtonItem key="rightBarButtonItem" image="Star" id="Tmr-pb-gcp">
+                            <connections>
+                                <action selector="starButtonClicked:" destination="ecI-OX-Zk9" id="0HO-cs-qsA"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <nil key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="starButton" destination="Tmr-pb-gcp" id="wCZ-bc-bKG"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6Lu-Nh-pMM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -353,6 +361,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Star" width="22" height="22"/>
         <image name="me" width="30" height="30"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

@@ -8,6 +8,8 @@
 
 #import "MyStarBooks.h"
 
+NSString* const MyStarBooksDidUpdateNotification = @"MyStarBooksDidUpdateNotification";
+
 static NSString *const kMyStarBooksKey = @"MyStarBooks";
 
 @implementation MyStarBooks
@@ -21,9 +23,11 @@ static NSString *const kMyStarBooksKey = @"MyStarBooks";
     }
     starBooks[isbn] = @{ @"name" : name,
                          @"url" : url,
+                         @"isbn" : isbn,
                          @"update_time" : [NSDate date] };
     [defaults setObject:[starBooks copy] forKey:kMyStarBooksKey];
     [defaults synchronize];
+    [[NSNotificationCenter defaultCenter] postNotificationName:MyStarBooksDidUpdateNotification object:self];
 }
 
 + (void)removeBook:(NSString *)isbn {
@@ -32,6 +36,7 @@ static NSString *const kMyStarBooksKey = @"MyStarBooks";
     [starBooks removeObjectForKey:isbn];
     [defaults setObject:[starBooks copy] forKey:kMyStarBooksKey];
     [defaults synchronize];
+    [[NSNotificationCenter defaultCenter] postNotificationName:MyStarBooksDidUpdateNotification object:self];
 }
 
 + (BOOL)hasBook:(NSString *)isbn {

@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="8wB-a6-VIh">
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--Search View Controller-->
+        <!--搜索-->
         <scene sceneID="VQs-dV-y40">
             <objects>
-                <viewController id="jqE-pP-bZx" userLabel="Search View Controller" customClass="SearchViewController" sceneMemberID="viewController">
+                <viewController id="jqE-pP-bZx" userLabel="搜索" customClass="SearchViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Nkg-jw-O9L"/>
                         <viewControllerLayoutGuide type="bottom" id="mtY-DF-Ou5"/>
@@ -121,12 +122,12 @@
             </objects>
             <point key="canvasLocation" x="1143" y="302"/>
         </scene>
-        <!--BookDetail-->
+        <!--详细内容-->
         <scene sceneID="BnS-Qn-ZNu">
             <objects>
-                <tableViewController storyboardIdentifier="BookDetail" title="BookDetail" hidesBottomBarWhenPushed="YES" id="ecI-OX-Zk9" customClass="BookDetailTableViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="BookDetail" title="BookDetail" hidesBottomBarWhenPushed="YES" id="ecI-OX-Zk9" userLabel="详细内容" customClass="BookDetailTableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" allowsSelection="NO" rowHeight="50" sectionHeaderHeight="10" sectionFooterHeight="10" id="ztV-HL-vph">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
@@ -228,12 +229,12 @@
             </objects>
             <point key="canvasLocation" x="1819" y="302"/>
         </scene>
-        <!--个人-->
+        <!--我-->
         <scene sceneID="b3P-wH-WvW">
             <objects>
-                <tableViewController id="u37-wv-o9V" sceneMemberID="viewController">
+                <tableViewController id="u37-wv-o9V" customClass="MeTableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="d6E-TW-1jZ">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                         <sections>
@@ -253,6 +254,9 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="a1F-ic-BFM" kind="push" id="vLO-If-DQz"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="rfF-nm-LY6" style="IBUITableViewCellStyleDefault" id="W41-oB-hqz">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -296,11 +300,49 @@
                             <outlet property="delegate" destination="u37-wv-o9V" id="fuD-F0-hSP"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="个人" id="aeV-UE-vPe"/>
+                    <navigationItem key="navigationItem" title="我" id="aeV-UE-vPe"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="o3t-iI-bBv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1143" y="950"/>
+        </scene>
+        <!--收藏-->
+        <scene sceneID="HCi-oO-BZ0">
+            <objects>
+                <tableViewController hidesBottomBarWhenPushed="YES" id="a1F-ic-BFM" customClass="MyStarBooksTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="hDX-N3-GW9">
+                        <rect key="frame" x="0.0" y="64" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="MyStarBookCell" textLabel="2hK-Yo-gOm" style="IBUITableViewCellStyleDefault" id="6hJ-z9-avJ">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6hJ-z9-avJ" id="pXv-JF-na9">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="2hK-Yo-gOm">
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="ecI-OX-Zk9" kind="push" id="l0H-dN-heN"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="a1F-ic-BFM" id="wVQ-jh-oAc"/>
+                            <outlet property="delegate" destination="a1F-ic-BFM" id="F54-mq-FYL"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="收藏" id="rl7-FK-K1K"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XTn-jd-8EO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1819" y="950"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="YSp-E7-6gp">
@@ -369,4 +411,7 @@
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
+    <inferredMetricsTieBreakers>
+        <segue reference="l0H-dN-heN"/>
+    </inferredMetricsTieBreakers>
 </document>

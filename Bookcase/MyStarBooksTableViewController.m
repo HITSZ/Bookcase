@@ -31,11 +31,6 @@ extern NSString *const MyStarBooksDidUpdateNotification;
 
 - (void)reloadData {
     self.myStarBooks = [MyStarBooks all];
-    if ([_myStarBooks count]) {
-        self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    } else {
-        self.navigationItem.rightBarButtonItem = nil;
-    }
     [self.tableView reloadData];
 }
 

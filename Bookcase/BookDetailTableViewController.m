@@ -29,6 +29,8 @@ static NSString* const kStarFilledImageName = @"Star Filled";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self.navigationItem.rightBarButtonItem setEnabled:NO];
+
     [[NSNotificationCenter defaultCenter] addObserver:self.tableView
                                              selector:@selector(reloadData)
                                                  name:SVProgressHUDDidDisappearNotification
@@ -44,6 +46,7 @@ static NSString* const kStarFilledImageName = @"Star Filled";
                                      _bookDetail = bookDetail;
                                      _bFetchDataFailed = NO;
                                      [SVProgressHUD dismiss];
+                                     [self.navigationItem.rightBarButtonItem setEnabled:YES];
                                      [self updateStarButtonStatus];
                                  }
                                  failure:^{

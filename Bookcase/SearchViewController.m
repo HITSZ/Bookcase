@@ -37,7 +37,6 @@
 
     UITextField* sbTextField = [_searchBar valueForKey:@"_searchField"];
     sbTextField.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];  // 改变搜索文本框的背景色
-    self.navigationController.view.backgroundColor = [UIColor whiteColor];
 
     [self setHotSearchViewHidden:NO];
 

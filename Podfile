@@ -6,6 +6,8 @@ target 'Bookcase' do
 pod 'SVProgressHUD'
 pod 'AFNetworking'
 pod 'IGHTMLQuery', '~> 0.8.4'
+pod 'Colours'
+pod 'TSMessages'
 
 end
 

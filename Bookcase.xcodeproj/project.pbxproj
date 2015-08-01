@@ -15,13 +15,14 @@
 		7452426C1B10CF14005BE8CD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7452426B1B10CF14005BE8CD /* main.m */; };
 		7452426F1B10CF14005BE8CD /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7452426E1B10CF14005BE8CD /* AppDelegate.m */; };
 		745242721B10CF14005BE8CD /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 745242711B10CF14005BE8CD /* SearchViewController.m */; };
-		7452427A1B10CF14005BE8CD /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 745242791B10CF14005BE8CD /* Images.xcassets */; };
 		7452427D1B10CF14005BE8CD /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7452427B1B10CF14005BE8CD /* LaunchScreen.xib */; };
 		745242891B10CF14005BE8CD /* BookcaseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 745242881B10CF14005BE8CD /* BookcaseTests.m */; };
 		745FD21B1B1F215C00DBC5CC /* BookListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 745FD21A1B1F215C00DBC5CC /* BookListTableViewCell.m */; };
 		746FB4A31B5D6D2F0002686A /* MyStarBooksTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 746FB4A21B5D6D2F0002686A /* MyStarBooksTableViewController.m */; };
 		746FB4A61B5D728C0002686A /* MeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 746FB4A51B5D728C0002686A /* MeTableViewController.m */; };
 		7478E0EE1B178831004DA433 /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7478E0ED1B178831004DA433 /* Main_iPhone.storyboard */; };
+		74AFBC481B68E13F00D29EF9 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 74AFBC471B68E13F00D29EF9 /* Images.xcassets */; };
+		74AFBC4B1B68EFFA00D29EF9 /* RecommendationTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74AFBC4A1B68EFFA00D29EF9 /* RecommendationTableViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,7 +52,6 @@
 		7452426E1B10CF14005BE8CD /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		745242701B10CF14005BE8CD /* SearchViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchViewController.h; sourceTree = "<group>"; };
 		745242711B10CF14005BE8CD /* SearchViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SearchViewController.m; sourceTree = "<group>"; };
-		745242791B10CF14005BE8CD /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		7452427C1B10CF14005BE8CD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		745242821B10CF14005BE8CD /* BookcaseTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BookcaseTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		745242871B10CF14005BE8CD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -63,6 +63,9 @@
 		746FB4A41B5D728C0002686A /* MeTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeTableViewController.h; sourceTree = "<group>"; };
 		746FB4A51B5D728C0002686A /* MeTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeTableViewController.m; sourceTree = "<group>"; };
 		7478E0ED1B178831004DA433 /* Main_iPhone.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main_iPhone.storyboard; sourceTree = "<group>"; };
+		74AFBC471B68E13F00D29EF9 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		74AFBC491B68EFFA00D29EF9 /* RecommendationTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecommendationTableViewController.h; sourceTree = "<group>"; };
+		74AFBC4A1B68EFFA00D29EF9 /* RecommendationTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecommendationTableViewController.m; sourceTree = "<group>"; };
 		8C31D7FCEB99DE50E1E6E0E5 /* Pods-Bookcase.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bookcase.release.xcconfig"; path = "Pods/Target Support Files/Pods-Bookcase/Pods-Bookcase.release.xcconfig"; sourceTree = "<group>"; };
 		CB603918AADC20E65F1E56F3 /* libPods-Bookcase.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Bookcase.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -113,10 +116,12 @@
 				745242711B10CF14005BE8CD /* SearchViewController.m */,
 				740BF6601B35B418009FD806 /* BookDetailTableViewController.h */,
 				740BF6611B35B418009FD806 /* BookDetailTableViewController.m */,
-				746FB4A11B5D6D2F0002686A /* MyStarBooksTableViewController.h */,
-				746FB4A21B5D6D2F0002686A /* MyStarBooksTableViewController.m */,
 				746FB4A41B5D728C0002686A /* MeTableViewController.h */,
 				746FB4A51B5D728C0002686A /* MeTableViewController.m */,
+				746FB4A11B5D6D2F0002686A /* MyStarBooksTableViewController.h */,
+				746FB4A21B5D6D2F0002686A /* MyStarBooksTableViewController.m */,
+				74AFBC491B68EFFA00D29EF9 /* RecommendationTableViewController.h */,
+				74AFBC4A1B68EFFA00D29EF9 /* RecommendationTableViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -164,8 +169,8 @@
 			children = (
 				7452426D1B10CF14005BE8CD /* AppDelegate.h */,
 				7452426E1B10CF14005BE8CD /* AppDelegate.m */,
-				745242791B10CF14005BE8CD /* Images.xcassets */,
 				7452427B1B10CF14005BE8CD /* LaunchScreen.xib */,
+				74AFBC471B68E13F00D29EF9 /* Images.xcassets */,
 				745242691B10CF14005BE8CD /* Supporting Files */,
 				743DA19C1B56BC7800FA2121 /* Model */,
 				743DA1971B56B77400FA2121 /* View */,
@@ -264,6 +269,7 @@
 		7452425E1B10CF14005BE8CD /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				CLASSPREFIX = "";
 				LastUpgradeCheck = 0630;
 				TargetAttributes = {
 					745242651B10CF14005BE8CD = {
@@ -299,9 +305,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				74AFBC481B68E13F00D29EF9 /* Images.xcassets in Resources */,
 				7478E0EE1B178831004DA433 /* Main_iPhone.storyboard in Resources */,
 				7452427D1B10CF14005BE8CD /* LaunchScreen.xib in Resources */,
-				7452427A1B10CF14005BE8CD /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -353,6 +359,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7452426F1B10CF14005BE8CD /* AppDelegate.m in Sources */,
+				74AFBC4B1B68EFFA00D29EF9 /* RecommendationTableViewController.m in Sources */,
 				745FD21B1B1F215C00DBC5CC /* BookListTableViewCell.m in Sources */,
 				743DA1A51B56C37D00FA2121 /* MyStarBooks.m in Sources */,
 				745242721B10CF14005BE8CD /* SearchViewController.m in Sources */,

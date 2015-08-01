@@ -11,6 +11,7 @@
 @interface LibraryService : NSObject
 
 + (void)getHotSearchWordsByIndex:(NSString*)index success:(void (^)(NSArray*))success;
+
 + (void)searchBookByIndex:(NSString*)index
                   withKey:(NSString*)key
                   success:(void (^)(NSArray*))success
@@ -21,6 +22,13 @@
                                success:(void (^)(NSArray*))success
                                failure:(void (^)(void))failure;
 
-+ (void)getBookDetailWithUrl:(NSString*)url success:(void (^)(NSDictionary*))success failure:(void (^)(void))failure;
++ (void)getBookDetailWithUrl:(NSString*)url
+                     success:(void (^)(NSDictionary*))success
+                     failure:(void (^)(void))failure;
+
+
++ (void)recommendBookWithPayload:(NSArray*)payload
+                         success:(void (^)(NSInteger code))success
+                         failure:(void (^)(void))failure;
 
 @end

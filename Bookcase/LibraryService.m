@@ -10,6 +10,7 @@
 
 #import "AFNetworking.h"
 #import "IGHTMLQuery.h"
+#import "RecommendationTableViewController.h"
 
 @implementation LibraryService
 
@@ -212,6 +213,32 @@
                   }];
 }
 
++ (void)recommendBookWithPayload:(NSArray*)payload
+                         success:(void (^)(NSUInteger code))success
+                         failure:(void (^)(void))failure {
+    NSDictionary* paras = @{@"title": payload[RecommendFormFieldTitle],
+                            @"responsible": payload[RecommendFormFieldResponsible],
+                            @"feedbackContent": payload[RecommendFormFieldFeedback],
+                            @"isbnIssn": payload[RecommendFormFieldISBN],
+                            @"press": payload[RecommendFormFieldPress],
+                            @"publicationYear": payload[RecommendFormFieldPubYear],
+                            @"name": payload[RecommendFormFieldName],
+                            @"companyName": payload[RecommendFormFieldWorkplace],
+                            @"email": payload[RecommendFormFieldEmail],
+                            @"checkCode": payload[RecommendFormFieldCaptcha],
+                            @"phone": @"",
+                            @"submit": @"提交"};
+    static NSString* const url = @"http://lib.utsz.edu.cn/readersRecommendPurchase/readersRecommendPurchaseForm/save.html";
+
+    [self requestByMethod:@"POST" withURL:url parameters:paras timeout:10 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSDictionary* code = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
+        success([code[@"error"] integerValue]);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        failure();
+    }];
+}
+
+#pragma mark -
 + (void)requestByMethod:(NSString*)method
                 withURL:(NSString*)url
              parameters:(NSDictionary*)parameters
@@ -229,6 +256,8 @@
 
     AFHTTPRequestOperationManager* manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    [manager.requestSerializer setValue:@"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.134 Safari/537.36"
+                     forHTTPHeaderField:@"User-Agent"];
     if (seconds) {
         [[manager requestSerializer] setTimeoutInterval:seconds];
     }
@@ -256,6 +285,7 @@
     }
 }
 
+#pragma mark -
 /**
  *  过滤检索词中的关键词，将出现的关键词替换为一个空格符。
  *

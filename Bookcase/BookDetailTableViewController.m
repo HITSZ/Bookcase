@@ -12,6 +12,7 @@
 
 #import "SVProgressHUD.h"
 #import "MyStarBooks.h"
+#import "TSMessages/TSMessage.h"
 
 static NSString* const kStarImageName = @"Star";
 static NSString* const kStarFilledImageName = @"Star Filled";
@@ -41,6 +42,7 @@ static NSString* const kStarFilledImageName = @"Star Filled";
 - (void)fetchBookDetail {
     self.tableView.backgroundView = nil;
     [SVProgressHUD showWithStatus:@"正在加载..." maskType:SVProgressHUDMaskTypeBlack];
+
     [LibraryService getBookDetailWithUrl:self.url
                                  success:^(NSDictionary* bookDetail) {
                                      _bookDetail = bookDetail;
@@ -149,10 +151,14 @@ enum { BASIC_SECTION = 0,
     NSString* isbn = _bookDetail[@"basic"][@"ISBN"];
     if ([MyStarBooks hasBook:isbn]) {
         [MyStarBooks removeBook:isbn];
-        [SVProgressHUD showErrorWithStatus:@"取消收藏" maskType:SVProgressHUDMaskTypeBlack];
+//        [SVProgressHUD showErrorWithStatus:@"取消收藏" maskType:SVProgressHUDMaskTypeBlack];
+//        [JDStatusBarNotification showWithStatus:@"取消收藏" dismissAfter:1.5 styleName:JDStatusBarStyleWarning];
+        [TSMessage showNotificationWithTitle:@"取消收藏" type:TSMessageNotificationTypeError];
     } else {
         [MyStarBooks addBookWithName:_bookDetail[@"basic"][@"书 名"] isbn:isbn url:_url];
-        [SVProgressHUD showSuccessWithStatus:@"收藏成功" maskType:SVProgressHUDMaskTypeBlack];
+//        [SVProgressHUD showSuccessWithStatus:@"收藏成功" maskType:SVProgressHUDMaskTypeBlack];
+//        [JDStatusBarNotification showWithStatus:@"收藏成功" dismissAfter:1 styleName:JDStatusBarStyleSuccess];
+        [TSMessage showNotificationWithTitle:@"收藏成功" type:TSMessageNotificationTypeSuccess];
     }
     [self updateStarButtonStatus];
 }

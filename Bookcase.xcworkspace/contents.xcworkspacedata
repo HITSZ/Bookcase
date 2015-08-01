@@ -2,9 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:Bookcase.xcodeproj">
+      location = "group:/Users/xohozu/workbench/Xcode/Bookcase/Bookcase.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Bookcase.xcodeproj">
    </FileRef>
 </Workspace>

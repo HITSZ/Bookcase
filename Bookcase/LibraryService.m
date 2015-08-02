@@ -214,7 +214,7 @@
 }
 
 + (void)recommendBookWithPayload:(NSArray*)payload
-                         success:(void (^)(NSUInteger code))success
+                         success:(void (^)(NSInteger code))success
                          failure:(void (^)(void))failure {
     NSDictionary* paras = @{@"title": payload[RecommendFormFieldTitle],
                             @"responsible": payload[RecommendFormFieldResponsible],

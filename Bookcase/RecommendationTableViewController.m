@@ -73,21 +73,21 @@ typedef NS_ENUM(NSInteger, RecommendedSubmissionStatus) {
 
     __weak __typeof(self) weakSelf = self;
     [_captchaImageView setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:kCaptchaImageRequestUrl]
-                                                                       cachePolicy:NSURLRequestReloadIgnoringCacheData
-                                                                   timeoutInterval:kRefreshCaptchaTimeoutInterval]
-                                     placeholderImage:[UIImage imageNamed:@"RefreshCaptcha"]
-                                              success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                                                  __strong __typeof(weakSelf) strongSelf = weakSelf;
-                                                  [strongSelf.captchaImageIndicator stopAnimating];
-                                                  [strongSelf.captchaImageView setHidden:NO];
-                                                  [strongSelf.captchaImageView setImage:image];
-                                                  [strongSelf.navigationItem.rightBarButtonItem setEnabled:YES];
-                                              }
-                                              failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                                                  __strong __typeof(weakSelf) strongSelf = weakSelf;
-                                                  [strongSelf.captchaImageIndicator stopAnimating];
-                                                  [strongSelf.captchaImageView setHidden:NO];
-                                              }];
+                                                               cachePolicy:NSURLRequestReloadIgnoringCacheData
+                                                           timeoutInterval:kRefreshCaptchaTimeoutInterval]
+                             placeholderImage:[UIImage imageNamed:@"RefreshCaptcha"]
+                                      success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                                          __strong __typeof(weakSelf) strongSelf = weakSelf;
+                                          [strongSelf.captchaImageIndicator stopAnimating];
+                                          [strongSelf.captchaImageView setHidden:NO];
+                                          [strongSelf.captchaImageView setImage:image];
+                                          [strongSelf.navigationItem.rightBarButtonItem setEnabled:YES];
+                                      }
+                                      failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+                                          __strong __typeof(weakSelf) strongSelf = weakSelf;
+                                          [strongSelf.captchaImageIndicator stopAnimating];
+                                          [strongSelf.captchaImageView setHidden:NO];
+                                      }];
 }
 
 #pragma mark - Delegate

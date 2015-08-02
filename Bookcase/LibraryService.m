@@ -216,26 +216,33 @@
 + (void)recommendBookWithPayload:(NSArray*)payload
                          success:(void (^)(NSInteger code))success
                          failure:(void (^)(void))failure {
-    NSDictionary* paras = @{@"title": payload[RecommendFormFieldTitle],
-                            @"responsible": payload[RecommendFormFieldResponsible],
-                            @"feedbackContent": payload[RecommendFormFieldFeedback],
-                            @"isbnIssn": payload[RecommendFormFieldISBN],
-                            @"press": payload[RecommendFormFieldPress],
-                            @"publicationYear": payload[RecommendFormFieldPubYear],
-                            @"name": payload[RecommendFormFieldName],
-                            @"companyName": payload[RecommendFormFieldWorkplace],
-                            @"email": payload[RecommendFormFieldEmail],
-                            @"checkCode": payload[RecommendFormFieldCaptcha],
-                            @"phone": @"",
-                            @"submit": @"提交"};
+    NSDictionary* paras = @{ @"title" : payload[RecommendFormFieldTitle],
+                             @"responsible" : payload[RecommendFormFieldResponsible],
+                             @"feedbackContent" : payload[RecommendFormFieldFeedback],
+                             @"isbnIssn" : payload[RecommendFormFieldISBN],
+                             @"press" : payload[RecommendFormFieldPress],
+                             @"publicationYear" : payload[RecommendFormFieldPubYear],
+                             @"name" : payload[RecommendFormFieldName],
+                             @"companyName" : payload[RecommendFormFieldWorkplace],
+                             @"email" : payload[RecommendFormFieldEmail],
+                             @"checkCode" : payload[RecommendFormFieldCaptcha],
+                             @"phone" : @"",
+                             @"submit" : @"提交" };
     static NSString* const url = @"http://lib.utsz.edu.cn/readersRecommendPurchase/readersRecommendPurchaseForm/save.html";
 
-    [self requestByMethod:@"POST" withURL:url parameters:paras timeout:10 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSDictionary* code = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingAllowFragments error:nil];
-        success([code[@"error"] integerValue]);
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        failure();
-    }];
+    [self requestByMethod:@"POST"
+                  withURL:url
+               parameters:paras
+                  timeout:10
+                  success:^(AFHTTPRequestOperation* operation, id responseObject) {
+                      NSDictionary* code = [NSJSONSerialization JSONObjectWithData:responseObject
+                                                                           options:NSJSONReadingAllowFragments
+                                                                             error:nil];
+                      success([code[@"error"] integerValue]);
+                  }
+                  failure:^(AFHTTPRequestOperation* operation, NSError* error) {
+                      failure();
+                  }];
 }
 
 #pragma mark -
@@ -327,8 +334,7 @@
     return origin;
 }
 
-+ (NSArray*)deduplicateObjectsOfArray:(NSArray*)kCandidates
-{
++ (NSArray*)deduplicateObjectsOfArray:(NSArray*)kCandidates {
     return [(NSSet*)[NSOrderedSet orderedSetWithArray:kCandidates] allObjects];
 }
 

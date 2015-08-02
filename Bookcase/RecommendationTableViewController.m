@@ -13,7 +13,7 @@
 
 #import "LibraryService.h"
 
-static NSString *const kCaptchaImageRequestUrl = @"http://lib.utsz.edu.cn/kaptcha.do";
+static NSString* const kCaptchaImageRequestUrl = @"http://lib.utsz.edu.cn/kaptcha.do";
 static NSTimeInterval const kRefreshCaptchaTimeoutInterval = 5.0;
 
 typedef NS_ENUM(NSUInteger, TableViewSection) {
@@ -37,9 +37,9 @@ typedef NS_ENUM(NSInteger, RecommendedSubmissionStatus) {
 
 @interface RecommendationTableViewController () <UITextFieldDelegate>
 
-@property(nonatomic, strong) IBOutletCollection(UITextField) NSArray *textFields;
-@property(weak, nonatomic) IBOutlet UIImageView *captchaImageView;
-@property(weak, nonatomic) IBOutlet UIActivityIndicatorView *captchaImageIndicator;
+@property(strong, nonatomic) IBOutletCollection(UITextField) NSArray* textFields;
+@property(weak, nonatomic) IBOutlet UIImageView* captchaImageView;
+@property(weak, nonatomic) IBOutlet UIActivityIndicatorView* captchaImageIndicator;
 
 @end
 
@@ -73,30 +73,30 @@ typedef NS_ENUM(NSInteger, RecommendedSubmissionStatus) {
 
     __weak __typeof(self) weakSelf = self;
     [_captchaImageView setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:kCaptchaImageRequestUrl]
-                                                                       cachePolicy:NSURLRequestReloadIgnoringCacheData
-                                                                   timeoutInterval:kRefreshCaptchaTimeoutInterval]
-                                     placeholderImage:[UIImage imageNamed:@"RefreshCaptcha"]
-                                              success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                                                  __strong __typeof(weakSelf) strongSelf = weakSelf;
-                                                  [strongSelf.captchaImageIndicator stopAnimating];
-                                                  [strongSelf.captchaImageView setHidden:NO];
-                                                  [strongSelf.captchaImageView setImage:image];
-                                                  [strongSelf.navigationItem.rightBarButtonItem setEnabled:YES];
-                                              }
-                                              failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                                                  __strong __typeof(weakSelf) strongSelf = weakSelf;
-                                                  [strongSelf.captchaImageIndicator stopAnimating];
-                                                  [strongSelf.captchaImageView setHidden:NO];
-                                              }];
+                                                               cachePolicy:NSURLRequestReloadIgnoringCacheData
+                                                           timeoutInterval:kRefreshCaptchaTimeoutInterval]
+                             placeholderImage:[UIImage imageNamed:@"RefreshCaptcha"]
+                                      success:^(NSURLRequest* request, NSHTTPURLResponse* response, UIImage* image) {
+                                          __strong __typeof(weakSelf) strongSelf = weakSelf;
+                                          [strongSelf.captchaImageIndicator stopAnimating];
+                                          [strongSelf.captchaImageView setHidden:NO];
+                                          [strongSelf.captchaImageView setImage:image];
+                                          [strongSelf.navigationItem.rightBarButtonItem setEnabled:YES];
+                                      }
+                                      failure:^(NSURLRequest* request, NSHTTPURLResponse* response, NSError* error) {
+                                          __strong __typeof(weakSelf) strongSelf = weakSelf;
+                                          [strongSelf.captchaImageIndicator stopAnimating];
+                                          [strongSelf.captchaImageView setHidden:NO];
+                                      }];
 }
 
 #pragma mark - Delegate
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+- (CGFloat)tableView:(UITableView*)tableView heightForHeaderInSection:(NSInteger)section {
     return 30;
 }
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+- (BOOL)textFieldShouldReturn:(UITextField*)textField {
     if (textField.tag == _textFields.count - 1) {
         [textField resignFirstResponder];
     } else {
@@ -111,7 +111,7 @@ typedef NS_ENUM(NSInteger, RecommendedSubmissionStatus) {
     if ([self canSubmit]) {
         [SVProgressHUD showWithStatus:@"正在提交..." maskType:SVProgressHUDMaskTypeBlack];
         [self.view endEditing:YES];
-        NSMutableArray *payload = [NSMutableArray arrayWithCapacity:[_textFields count]];
+        NSMutableArray* payload = [NSMutableArray arrayWithCapacity:[_textFields count]];
         for (int i = 0; i < [_textFields count]; i++) {
             payload[i] = [_textFields[i] text];
         }
@@ -131,7 +131,7 @@ typedef NS_ENUM(NSInteger, RecommendedSubmissionStatus) {
 
 #pragma mark -
 - (void)submissionFailed:(RecommendedSubmissionStatus)code {
-    NSString *msg = nil;
+    NSString* msg = nil;
     TSMessageNotificationType type;
     switch (code) {
         case RecommendedSubmissionStatusInvalidCaptcha:
@@ -156,7 +156,7 @@ typedef NS_ENUM(NSInteger, RecommendedSubmissionStatus) {
 }
 
 - (void)resetFormFields {
-    for (UITextField *tf in _textFields) {
+    for (UITextField* tf in _textFields) {
         tf.text = @"";
     }
     [self refreshCaptcha];
@@ -179,7 +179,7 @@ typedef NS_ENUM(NSInteger, RecommendedSubmissionStatus) {
 
 - (BOOL)validateRequiredFieldWithLabel:(RecommendFormField)field {
     if ([_textFields[field] text].length == 0) {
-        NSString *errorMsg = [NSString new];
+        NSString* errorMsg = [NSString new];
         switch (field) {
             case RecommendFormFieldTitle:
                 errorMsg = @"书名不能为空";
@@ -206,9 +206,9 @@ typedef NS_ENUM(NSInteger, RecommendedSubmissionStatus) {
     return YES;
 }
 
-- (BOOL)validateEmailWithString:(NSString *)candidate {
-    NSString *emailRegex = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
-    NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegex];
+- (BOOL)validateEmailWithString:(NSString*)candidate {
+    NSString* emailRegex = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
+    NSPredicate* emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegex];
     if ([emailTest evaluateWithObject:candidate]) {
         return YES;
     } else {

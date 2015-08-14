@@ -8,6 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
+typedef NS_ENUM(NSUInteger, LibraryServiceStatusCode) {
+    LibraryServiceStatusNotLogin,
+    LibraryServiceStatusError
+};
+
 @interface LibraryService : NSObject
 
 + (void)getHotSearchWordsByIndex:(NSString*)index success:(void (^)(NSArray*))success;
@@ -30,5 +35,18 @@
 + (void)recommendBookWithPayload:(NSArray*)payload
                          success:(void (^)(NSInteger code))success
                          failure:(void (^)(void))failure;
+
++ (void)getMyBorrowedBooksWithReaderno:(NSString *)readerno
+                               success:(void (^)(NSArray *))success
+                               failure:(void (^)(void))failure;
+
++ (void)renewMyBorrowedBooksInBarcodes:(NSArray *)barcodes
+                               success:(void (^)(NSString *))success
+                               failure:(void (^)(LibraryServiceStatusCode code))failure;
+
++ (void)loginWithUsername:(NSString*)username
+                 password:(NSString*)password
+                  success:(void (^)(NSString*))success
+                  failure:(void (^)(void))failure;
 
 @end

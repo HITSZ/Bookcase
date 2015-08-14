@@ -6,6 +6,8 @@
 //
 //
 
+#include <CommonCrypto/CommonDigest.h>
+
 #import "LibraryService.h"
 
 #import "AFNetworking.h"
@@ -228,19 +230,115 @@
                              @"checkCode" : payload[RecommendFormFieldCaptcha],
                              @"phone" : @"",
                              @"submit" : @"提交" };
-    static NSString* const url = @"http://lib.utsz.edu.cn/readersRecommendPurchase/readersRecommendPurchaseForm/save.html";
+    static NSString* const urlString = @"http://lib.utsz.edu.cn/readersRecommendPurchase/readersRecommendPurchaseForm/save.html";
 
     [self requestByMethod:@"POST"
-                  withURL:url
+                  withURL:urlString
                parameters:paras
                   timeout:10
-                  success:^(AFHTTPRequestOperation* operation, id responseObject) {
-                      NSDictionary* code = [NSJSONSerialization JSONObjectWithData:responseObject
-                                                                           options:NSJSONReadingAllowFragments
-                                                                             error:nil];
+                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                      NSDictionary* code = [NSJSONSerialization
+                                            JSONObjectWithData:responseObject
+                                            options:NSJSONReadingAllowFragments
+                                            error:nil];
                       success([code[@"error"] integerValue]);
                   }
-                  failure:^(AFHTTPRequestOperation* operation, NSError* error) {
+                  failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                      failure();
+                  }];
+}
+
++ (void)getMyBorrowedBooksWithReaderno:(NSString *)readerno
+                               success:(void (^)(NSArray *))success
+                               failure:(void (^)(void))failure {
+    NSString *const urlString = [NSString stringWithFormat:@"http://219.223.211.171/MyLibrary/getloanlist.jsp?readerno=%@", readerno];
+    NSLog(@"%@", urlString);
+    [self requestByMethod:@"GET"
+                  withURL:urlString
+               parameters:nil
+                  timeout:10
+                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                      NSMutableArray *borrowedBooks = [NSMutableArray new];
+                      IGXMLDocument *xml = [[IGXMLDocument alloc] initWithXMLData:responseObject encoding:@"utf8" error:nil];
+                      [[xml queryWithXPath:@"//root/loanlist/meta/title"] enumerateNodesUsingBlock:^(IGXMLNode *content, NSUInteger idx, BOOL *stop) {
+                          [borrowedBooks addObject:[[NSMutableDictionary alloc]initWithDictionary:@{
+                                                                                                    @"title" : content.text,
+                                                                                                    @"barcode" : @"",
+                                                                                                    @"loandate" : @"",
+                                                                                                    @"returndate" : @"",
+                                                                                                    @"canrenew" : @""
+                                                                                                    }]];
+                      }];
+                      NSLog(@"%lu", (unsigned long)borrowedBooks.count);
+                      [[xml queryWithXPath:@"//root/loanlist/meta/barcode"] enumerateNodesUsingBlock:^(IGXMLNode *content, NSUInteger idx, BOOL *stop) {
+                          borrowedBooks[idx][@"barcode"] = content.text;
+                      }];
+                      [[xml queryWithXPath:@"//root/loanlist/meta/loandate"] enumerateNodesUsingBlock:^(IGXMLNode *content, NSUInteger idx, BOOL *stop) {
+                          borrowedBooks[idx][@"loandate"] = content.text;
+                      }];
+                      [[xml queryWithXPath:@"//root/loanlist/meta/returndate"] enumerateNodesUsingBlock:^(IGXMLNode *content, NSUInteger idx, BOOL *stop) {
+                          borrowedBooks[idx][@"returndate"] = content.text;
+                      }];
+                      [[xml queryWithXPath:@"//root/loanlist/meta/canrenew"] enumerateNodesUsingBlock:^(IGXMLNode *content, NSUInteger idx, BOOL *stop) {
+                          borrowedBooks[idx][@"canrenew"] = content.text;
+                      }];
+                      success(borrowedBooks);
+                      NSLog(@"%@", borrowedBooks);
+                  }
+                  failure:^(AFHTTPRequestOperation *operation, NSError *error){
+                      failure();
+      }];
+}
+
++ (void)renewMyBorrowedBooksInBarcodes:(NSArray *)barcodes
+                               success:(void (^)(NSString *))success
+                               failure:(void (^)(LibraryServiceStatusCode code))failure {
+    if (barcodes.count == 0) {
+        return;
+    }
+    NSMutableString *const urlString = [NSMutableString stringWithString:@"http://219.223.211.171/MyLibrary/response.jsp?"];
+    for (NSString *barcode in barcodes) {
+        [urlString appendFormat:@"v_select=%@&", barcode];
+    }
+    [LibraryService requestByMethod:@"GET"
+                            withURL:urlString
+                         parameters:nil
+                            timeout:10
+                            success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                IGHTMLDocument *html = [[IGHTMLDocument alloc] initWithHTMLData:responseObject encoding:@"utf8" error:nil];
+                                NSLog(@"%@", [html html]);
+                                if ([[[[html queryWithXPath:@"//head/title"] firstObject] text] isEqualToString:@"我的图书馆"]) {
+                                    // 未登录
+                                    failure(LibraryServiceStatusNotLogin);
+                                } else {
+                                    success([[[html queryWithXPath:@"//body/div"] firstObject] text]);
+                                }
+                            }
+                            failure:^(AFHTTPRequestOperation *operation, NSError *error){
+                                failure(LibraryServiceStatusError);
+                            }];
+}
+
++ (void)loginWithUsername:(NSString *)username
+                 password:(NSString *)password
+                  success:(void (^)(NSString *))success
+                  failure:(void (^)(void))failure {
+    static NSString *const urlString = @"http://219.223.211.171/MyLibrary/readerLoginM.jsp";
+    NSDictionary *params = @{
+                             @"username" : username,
+                             @"password" : [self md5:password]
+                             };
+    [self requestByMethod:@"POST"
+                  withURL:urlString
+               parameters:params
+                  timeout:10
+                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                      IGHTMLDocument* html = [[IGHTMLDocument alloc] initWithHTMLData:responseObject encoding:@"utf8" error:nil];
+                      NSLog(@"%@", [html html]);
+                      NSString *message = [[[html queryWithXPath:@"//root/message"] firstObject] text];
+                      success(message);
+                  }
+                  failure:^(AFHTTPRequestOperation *operation, NSError *error){
                       failure();
                   }];
 }
@@ -336,6 +434,18 @@
 
 + (NSArray*)deduplicateObjectsOfArray:(NSArray*)kCandidates {
     return [(NSSet*)[NSOrderedSet orderedSetWithArray:kCandidates] allObjects];
+}
+
++ (NSString*)md5:(NSString*)src {
+    const char* cstr = [src UTF8String];
+    CC_LONG len = (unsigned int)strlen(cstr);
+    unsigned char result[CC_MD5_DIGEST_LENGTH];
+    CC_MD5(cstr, len, result);
+    NSMutableString* hashedString = [NSMutableString stringWithCapacity:CC_MD5_DIGEST_LENGTH * 2];
+    for (int i = 0; i < CC_MD5_DIGEST_LENGTH; i++) {
+        [hashedString appendFormat:@"%02X", result[i]];
+    }
+    return hashedString;
 }
 
 @end

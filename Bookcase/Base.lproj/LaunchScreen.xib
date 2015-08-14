@@ -12,13 +12,13 @@
             <rect key="frame" x="0.0" y="0.0" width="480" height="480"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="移动图书馆" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" minimumFontSize="18" translatesAutoresizingMaskIntoConstraints="NO" id="kId-c2-rCX">
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="深圳大学城图书馆" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" minimumFontSize="18" translatesAutoresizingMaskIntoConstraints="NO" id="kId-c2-rCX">
                     <rect key="frame" x="0.0" y="140" width="480" height="43"/>
                     <fontDescription key="fontDescription" type="system" pointSize="36"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Copyright ©2015 xohozu All rights reserved." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A8I-RN-olS">
-                    <rect key="frame" x="46" y="457" width="426" height="15"/>
+                    <rect key="frame" x="8" y="457" width="464" height="15"/>
                     <fontDescription key="fontDescription" type="system" weight="light" pointSize="12"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
@@ -32,7 +32,7 @@
                 <constraint firstAttribute="centerX" secondItem="kId-c2-rCX" secondAttribute="centerX" id="Koa-jz-hwk"/>
                 <constraint firstItem="kId-c2-rCX" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="X4i-kC-nvY"/>
                 <constraint firstAttribute="bottom" secondItem="A8I-RN-olS" secondAttribute="bottom" constant="8" id="ZJz-bT-3J4"/>
-                <constraint firstItem="A8I-RN-olS" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="46" id="mVq-qP-gaH"/>
+                <constraint firstItem="A8I-RN-olS" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="mVq-qP-gaH"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

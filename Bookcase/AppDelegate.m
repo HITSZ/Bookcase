@@ -21,6 +21,10 @@
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
     [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
+
+    // Setup navigaton
+//    [[UINavigationBar appearance] setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+//    [[UINavigationBar appearance] setShadowImage:[UIImage new]];
     return YES;
 }
 

@@ -8,8 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		2481DC1F94CAC5153FC5D2F1 /* libPods-Bookcase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CB603918AADC20E65F1E56F3 /* libPods-Bookcase.a */; };
+		7402263E1B72791A009AAAEB /* LoginManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7402263D1B72791A009AAAEB /* LoginManager.m */; };
 		740BF6621B35B418009FD806 /* BookDetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 740BF6611B35B418009FD806 /* BookDetailTableViewController.m */; };
 		740BF6651B383897009FD806 /* BookStatusTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 740BF6641B383897009FD806 /* BookStatusTableViewCell.m */; };
+		741FF7E11B72677500B85697 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 741FF7E01B72677500B85697 /* LoginViewController.m */; };
 		743DA1A51B56C37D00FA2121 /* MyStarBooks.m in Sources */ = {isa = PBXBuildFile; fileRef = 743DA1A41B56C37D00FA2121 /* MyStarBooks.m */; };
 		7450DEBF1B1CB7B300994915 /* LibraryService.m in Sources */ = {isa = PBXBuildFile; fileRef = 7450DEBE1B1CB7B300994915 /* LibraryService.m */; };
 		7452426C1B10CF14005BE8CD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7452426B1B10CF14005BE8CD /* main.m */; };
@@ -17,12 +19,14 @@
 		745242721B10CF14005BE8CD /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 745242711B10CF14005BE8CD /* SearchViewController.m */; };
 		7452427D1B10CF14005BE8CD /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7452427B1B10CF14005BE8CD /* LaunchScreen.xib */; };
 		745242891B10CF14005BE8CD /* BookcaseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 745242881B10CF14005BE8CD /* BookcaseTests.m */; };
+		745E5D311B7E5EAC00249A0D /* BorrowedBookTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 745E5D301B7E5EAC00249A0D /* BorrowedBookTableViewCell.m */; };
 		745FD21B1B1F215C00DBC5CC /* BookListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 745FD21A1B1F215C00DBC5CC /* BookListTableViewCell.m */; };
 		746FB4A31B5D6D2F0002686A /* MyStarBooksTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 746FB4A21B5D6D2F0002686A /* MyStarBooksTableViewController.m */; };
 		746FB4A61B5D728C0002686A /* MeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 746FB4A51B5D728C0002686A /* MeTableViewController.m */; };
 		7478E0EE1B178831004DA433 /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7478E0ED1B178831004DA433 /* Main_iPhone.storyboard */; };
 		74AFBC481B68E13F00D29EF9 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 74AFBC471B68E13F00D29EF9 /* Images.xcassets */; };
 		74AFBC4B1B68EFFA00D29EF9 /* RecommendationTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74AFBC4A1B68EFFA00D29EF9 /* RecommendationTableViewController.m */; };
+		74D0E1711B6FCA9000592540 /* BorrowedBooksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D0E1701B6FCA9000592540 /* BorrowedBooksViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,10 +41,14 @@
 
 /* Begin PBXFileReference section */
 		44DD1899500C869163178978 /* Pods-Bookcase.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bookcase.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Bookcase/Pods-Bookcase.debug.xcconfig"; sourceTree = "<group>"; };
+		7402263C1B72791A009AAAEB /* LoginManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginManager.h; sourceTree = "<group>"; };
+		7402263D1B72791A009AAAEB /* LoginManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginManager.m; sourceTree = "<group>"; };
 		740BF6601B35B418009FD806 /* BookDetailTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BookDetailTableViewController.h; sourceTree = "<group>"; };
 		740BF6611B35B418009FD806 /* BookDetailTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BookDetailTableViewController.m; sourceTree = "<group>"; };
 		740BF6631B383897009FD806 /* BookStatusTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BookStatusTableViewCell.h; sourceTree = "<group>"; };
 		740BF6641B383897009FD806 /* BookStatusTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BookStatusTableViewCell.m; sourceTree = "<group>"; };
+		741FF7DF1B72677500B85697 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		741FF7E01B72677500B85697 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		743DA1A31B56C37D00FA2121 /* MyStarBooks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyStarBooks.h; sourceTree = "<group>"; };
 		743DA1A41B56C37D00FA2121 /* MyStarBooks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyStarBooks.m; sourceTree = "<group>"; };
 		7450DEBD1B1CB7B300994915 /* LibraryService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LibraryService.h; sourceTree = "<group>"; };
@@ -56,6 +64,8 @@
 		745242821B10CF14005BE8CD /* BookcaseTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BookcaseTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		745242871B10CF14005BE8CD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		745242881B10CF14005BE8CD /* BookcaseTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BookcaseTests.m; sourceTree = "<group>"; };
+		745E5D2F1B7E5EAC00249A0D /* BorrowedBookTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BorrowedBookTableViewCell.h; sourceTree = "<group>"; };
+		745E5D301B7E5EAC00249A0D /* BorrowedBookTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BorrowedBookTableViewCell.m; sourceTree = "<group>"; };
 		745FD2191B1F215C00DBC5CC /* BookListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BookListTableViewCell.h; sourceTree = "<group>"; };
 		745FD21A1B1F215C00DBC5CC /* BookListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BookListTableViewCell.m; sourceTree = "<group>"; };
 		746FB4A11B5D6D2F0002686A /* MyStarBooksTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyStarBooksTableViewController.h; sourceTree = "<group>"; };
@@ -63,9 +73,12 @@
 		746FB4A41B5D728C0002686A /* MeTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeTableViewController.h; sourceTree = "<group>"; };
 		746FB4A51B5D728C0002686A /* MeTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeTableViewController.m; sourceTree = "<group>"; };
 		7478E0ED1B178831004DA433 /* Main_iPhone.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main_iPhone.storyboard; sourceTree = "<group>"; };
+		7481C8F91B7C350A00FD37AE /* Bookcase-prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Bookcase-prefix.pch"; sourceTree = "<group>"; };
 		74AFBC471B68E13F00D29EF9 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		74AFBC491B68EFFA00D29EF9 /* RecommendationTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecommendationTableViewController.h; sourceTree = "<group>"; };
 		74AFBC4A1B68EFFA00D29EF9 /* RecommendationTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecommendationTableViewController.m; sourceTree = "<group>"; };
+		74D0E16F1B6FCA9000592540 /* BorrowedBooksViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BorrowedBooksViewController.h; sourceTree = "<group>"; };
+		74D0E1701B6FCA9000592540 /* BorrowedBooksViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BorrowedBooksViewController.m; sourceTree = "<group>"; };
 		8C31D7FCEB99DE50E1E6E0E5 /* Pods-Bookcase.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bookcase.release.xcconfig"; path = "Pods/Target Support Files/Pods-Bookcase/Pods-Bookcase.release.xcconfig"; sourceTree = "<group>"; };
 		CB603918AADC20E65F1E56F3 /* libPods-Bookcase.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Bookcase.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -105,6 +118,8 @@
 				745FD21A1B1F215C00DBC5CC /* BookListTableViewCell.m */,
 				740BF6631B383897009FD806 /* BookStatusTableViewCell.h */,
 				740BF6641B383897009FD806 /* BookStatusTableViewCell.m */,
+				745E5D2F1B7E5EAC00249A0D /* BorrowedBookTableViewCell.h */,
+				745E5D301B7E5EAC00249A0D /* BorrowedBookTableViewCell.m */,
 			);
 			name = Cell;
 			sourceTree = "<group>";
@@ -120,8 +135,12 @@
 				746FB4A51B5D728C0002686A /* MeTableViewController.m */,
 				746FB4A11B5D6D2F0002686A /* MyStarBooksTableViewController.h */,
 				746FB4A21B5D6D2F0002686A /* MyStarBooksTableViewController.m */,
+				74D0E16F1B6FCA9000592540 /* BorrowedBooksViewController.h */,
+				74D0E1701B6FCA9000592540 /* BorrowedBooksViewController.m */,
 				74AFBC491B68EFFA00D29EF9 /* RecommendationTableViewController.h */,
 				74AFBC4A1B68EFFA00D29EF9 /* RecommendationTableViewController.m */,
+				741FF7DF1B72677500B85697 /* LoginViewController.h */,
+				741FF7E01B72677500B85697 /* LoginViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -129,6 +148,8 @@
 		743DA19B1B56BC6700FA2121 /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				7402263C1B72791A009AAAEB /* LoginManager.h */,
+				7402263D1B72791A009AAAEB /* LoginManager.m */,
 				7450DEBD1B1CB7B300994915 /* LibraryService.h */,
 				7450DEBE1B1CB7B300994915 /* LibraryService.m */,
 			);
@@ -183,6 +204,7 @@
 		745242691B10CF14005BE8CD /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				7481C8F91B7C350A00FD37AE /* Bookcase-prefix.pch */,
 				7452426A1B10CF14005BE8CD /* Info.plist */,
 				7452426B1B10CF14005BE8CD /* main.m */,
 			);
@@ -359,16 +381,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				7452426F1B10CF14005BE8CD /* AppDelegate.m in Sources */,
+				74D0E1711B6FCA9000592540 /* BorrowedBooksViewController.m in Sources */,
+				741FF7E11B72677500B85697 /* LoginViewController.m in Sources */,
 				74AFBC4B1B68EFFA00D29EF9 /* RecommendationTableViewController.m in Sources */,
 				745FD21B1B1F215C00DBC5CC /* BookListTableViewCell.m in Sources */,
 				743DA1A51B56C37D00FA2121 /* MyStarBooks.m in Sources */,
 				745242721B10CF14005BE8CD /* SearchViewController.m in Sources */,
+				745E5D311B7E5EAC00249A0D /* BorrowedBookTableViewCell.m in Sources */,
 				7450DEBF1B1CB7B300994915 /* LibraryService.m in Sources */,
 				746FB4A31B5D6D2F0002686A /* MyStarBooksTableViewController.m in Sources */,
 				7452426C1B10CF14005BE8CD /* main.m in Sources */,
 				740BF6651B383897009FD806 /* BookStatusTableViewCell.m in Sources */,
 				740BF6621B35B418009FD806 /* BookDetailTableViewController.m in Sources */,
 				746FB4A61B5D728C0002686A /* MeTableViewController.m in Sources */,
+				7402263E1B72791A009AAAEB /* LoginManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -427,6 +453,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/Bookcase/Bookcase-prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -469,6 +496,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/Bookcase/Bookcase-prefix.pch";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;

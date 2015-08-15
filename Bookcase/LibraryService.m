@@ -279,11 +279,11 @@
                       [[xml queryWithXPath:@"//root/loanlist/meta/returndate"] enumerateNodesUsingBlock:^(IGXMLNode *content, NSUInteger idx, BOOL *stop) {
                           borrowedBooks[idx][@"returndate"] = content.text;
                       }];
-                      [[xml queryWithXPath:@"//root/loanlist/meta/canrenew"] enumerateNodesUsingBlock:^(IGXMLNode *content, NSUInteger idx, BOOL *stop) {
-                          borrowedBooks[idx][@"canrenew"] = content.text;
+                      [[xml queryWithXPath:@"//root/loanlist/meta/renew"] enumerateNodesUsingBlock:^(IGXMLNode *content, NSUInteger idx, BOOL *stop) {
+                          borrowedBooks[idx][@"renew"] = content.text;
                       }];
                       success(borrowedBooks);
-                      NSLog(@"%@", borrowedBooks);
+//                      NSLog(@"%@", borrowedBooks);
                   }
                   failure:^(AFHTTPRequestOperation *operation, NSError *error){
                       failure();
@@ -300,18 +300,20 @@
     for (NSString *barcode in barcodes) {
         [urlString appendFormat:@"v_select=%@&", barcode];
     }
+    NSLog(@"%@", urlString);
     [LibraryService requestByMethod:@"GET"
                             withURL:urlString
                          parameters:nil
                             timeout:10
                             success:^(AFHTTPRequestOperation *operation, id responseObject) {
                                 IGHTMLDocument *html = [[IGHTMLDocument alloc] initWithHTMLData:responseObject encoding:@"utf8" error:nil];
-                                NSLog(@"%@", [html html]);
+//                                NSLog(@"%@", [html html]);
                                 if ([[[[html queryWithXPath:@"//head/title"] firstObject] text] isEqualToString:@"我的图书馆"]) {
                                     // 未登录
                                     failure(LibraryServiceStatusNotLogin);
                                 } else {
-                                    success([[[html queryWithXPath:@"//body/div"] firstObject] text]);
+                                    NSString *message = [[[[html queryWithXPath:@"//body/div"] firstObject] text] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+                                    success(message);
                                 }
                             }
                             failure:^(AFHTTPRequestOperation *operation, NSError *error){
@@ -334,7 +336,7 @@
                   timeout:10
                   success:^(AFHTTPRequestOperation *operation, id responseObject) {
                       IGHTMLDocument* html = [[IGHTMLDocument alloc] initWithHTMLData:responseObject encoding:@"utf8" error:nil];
-                      NSLog(@"%@", [html html]);
+//                      NSLog(@"%@", [html html]);
                       NSString *message = [[[html queryWithXPath:@"//root/message"] firstObject] text];
                       success(message);
                   }

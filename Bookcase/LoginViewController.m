@@ -12,8 +12,8 @@
 
 @interface LoginViewController () <UITextFieldDelegate>
 
-@property (weak, nonatomic) IBOutlet UITextField *username;
-@property (weak, nonatomic) IBOutlet UITextField *password;
+@property(weak, nonatomic) IBOutlet UITextField *username;
+@property(weak, nonatomic) IBOutlet UITextField *password;
 
 @end
 
@@ -21,14 +21,16 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
     NSLog(@"%@", self);
     _username.text = [LoginManager sharedManager].username;
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void)viewDidDisappear:(BOOL)animated {
+    NSLog(@"%@", self);
+}
+
+- (void)dealloc {
+    NSLog(@"%@", self);
 }
 
 #pragma mark - Text field delegate
@@ -44,14 +46,10 @@
 
 #pragma mark - IBAction
 
-- (IBAction)dismiss:(id)sender {
+- (IBAction)cancleLogin:(id)sender {
+    NSLog(@"%@", self);
     [TSMessage dismissActiveNotification];
-    [self.presentingViewController dismissViewControllerAnimated:NO completion:^{
-        if ([self.delegate respondsToSelector:@selector(loginViewDismissed)]) {
-            // In fact this is gurannteed by definition of self.delegate, such as id<xxDelegate>.
-            [self.delegate loginViewDismissed];
-        }
-    }];
+    [self.delegate loginViewDidDismissWithStatus:LoginStatusDismiss];
 }
 
 - (IBAction)loginButtonClicked:(id)sender {
@@ -63,15 +61,12 @@
     [[LoginManager sharedManager] loginWithUsername:_username.text
                                            password:_password.text
                                             success:^(NSString *message) {
-                                                [TSMessage showNotificationInViewController:self title:message subtitle:nil type:TSMessageNotificationTypeSuccess];
-                                                dispatch_time_t delay = dispatch_time(DISPATCH_TIME_NOW, 1.5 * NSEC_PER_SEC);
-                                                dispatch_after(delay, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                                                    [self dismiss:nil];
-                                                });
+                                                // [TSMessage showNotificationWithTitle:message type:TSMessageNotificationTypeSuccess];
+                                                [self.delegate loginViewDidDismissWithStatus:LoginStatusSuccess];
                                             }
                                             failure:^(NSString *message) {
                                                 [TSMessage showNotificationInViewController:self title:message subtitle:nil type:TSMessageNotificationTypeError];
-                                            }];
+      }];
 }
 
 @end

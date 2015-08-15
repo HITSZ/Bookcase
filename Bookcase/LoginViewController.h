@@ -8,6 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+typedef NS_ENUM(NSUInteger, LoginStatusCode) {
+    LoginStatusNone,
+    LoginStatusSuccess,
+    LoginStatusFail,
+    LoginStatusDismiss
+};
+
 @protocol LoginViewControllerDelegate;
 
 @interface LoginViewController : UIViewController
@@ -18,6 +25,6 @@
 
 @protocol LoginViewControllerDelegate <NSObject>
 
-- (void)loginViewDismissed;
+- (void)loginViewDidDismissWithStatus:(LoginStatusCode)status;
 
 @end

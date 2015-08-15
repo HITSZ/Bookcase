@@ -18,7 +18,6 @@ static NSString *const kReaderno = @"Readerno";
 @property(nonatomic, readwrite, setter=setReaderno:) NSString *readerno;
 @property(nonatomic, readwrite, setter=setUsername:) NSString *username;
 @property(nonatomic, setter=setPassword:) NSString *password;
-@property(nonatomic, readwrite) BOOL isLogin;
 
 @end
 
@@ -27,7 +26,6 @@ static NSString *const kReaderno = @"Readerno";
 - (instancetype)init {
     self = [super init];
     if (self) {
-        _isLogin = NO;
         _readerno = [[NSUserDefaults standardUserDefaults] objectForKey:kReaderno];
         _username = [[NSUserDefaults standardUserDefaults] objectForKey:kUsername];
     }
@@ -51,7 +49,6 @@ static NSString *const kReaderno = @"Readerno";
                              password:password
                               success:^(NSString *msg) {
                                   if ([msg isEqualToString:@"OK"]) {
-                                      _isLogin = YES;
                                       self.username = username;
                                       self.password = password;
                                       NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
@@ -62,12 +59,10 @@ static NSString *const kReaderno = @"Readerno";
                                       }
                                       success(@"登录成功!");
                                   } else {
-                                      [self logout];
                                       failure(msg);
                                   }
                               }
                               failure:^{
-                                  [self logout];
                                   failure(@"网络错误!");
                               }];
 }
@@ -77,7 +72,6 @@ static NSString *const kReaderno = @"Readerno";
 }
 
 - (void)logout {
-    _isLogin = NO;
     self.username = nil;
     self.password = nil;
     self.readerno = nil;

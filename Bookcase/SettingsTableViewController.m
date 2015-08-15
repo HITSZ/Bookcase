@@ -63,15 +63,16 @@
 - (void)mailComposeController:(MFMailComposeViewController *)controller
           didFinishWithResult:(MFMailComposeResult)result
                         error:(NSError *)error {
-    switch (result) {
-        case MFMailComposeResultSent:
-            [TSMessage showNotificationWithTitle:@"您的反馈我们会尽快查看^_^!" type:TSMessageNotificationTypeSuccess];
-            break;
-        default:
-            [TSMessage showNotificationWithTitle:@"我们非常愿意聆听您的声音~" type:TSMessageNotificationTypeWarning];
-            break;
-    }
-    [self dismissViewControllerAnimated:NO completion:nil];
+    [self dismissViewControllerAnimated:YES completion:^{
+        switch (result) {
+            case MFMailComposeResultSent:
+                [TSMessage showNotificationWithTitle:@"您的反馈我们会尽快查看^_^!" type:TSMessageNotificationTypeSuccess];
+                break;
+            default:
+                [TSMessage showNotificationWithTitle:@"我们非常愿意聆听您的声音~" type:TSMessageNotificationTypeWarning];
+                break;
+        }
+    }];
 }
 
 @end

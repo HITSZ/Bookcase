@@ -20,6 +20,7 @@
 		7452427D1B10CF14005BE8CD /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7452427B1B10CF14005BE8CD /* LaunchScreen.xib */; };
 		745242891B10CF14005BE8CD /* BookcaseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 745242881B10CF14005BE8CD /* BookcaseTests.m */; };
 		745E5D311B7E5EAC00249A0D /* BorrowedBookTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 745E5D301B7E5EAC00249A0D /* BorrowedBookTableViewCell.m */; };
+		745E5D341B7F2FF800249A0D /* SettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 745E5D331B7F2FF800249A0D /* SettingsTableViewController.m */; };
 		745FD21B1B1F215C00DBC5CC /* BookListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 745FD21A1B1F215C00DBC5CC /* BookListTableViewCell.m */; };
 		746FB4A31B5D6D2F0002686A /* MyStarBooksTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 746FB4A21B5D6D2F0002686A /* MyStarBooksTableViewController.m */; };
 		746FB4A61B5D728C0002686A /* MeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 746FB4A51B5D728C0002686A /* MeTableViewController.m */; };
@@ -66,6 +67,8 @@
 		745242881B10CF14005BE8CD /* BookcaseTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BookcaseTests.m; sourceTree = "<group>"; };
 		745E5D2F1B7E5EAC00249A0D /* BorrowedBookTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BorrowedBookTableViewCell.h; sourceTree = "<group>"; };
 		745E5D301B7E5EAC00249A0D /* BorrowedBookTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BorrowedBookTableViewCell.m; sourceTree = "<group>"; };
+		745E5D321B7F2FF800249A0D /* SettingsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsTableViewController.h; sourceTree = "<group>"; };
+		745E5D331B7F2FF800249A0D /* SettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsTableViewController.m; sourceTree = "<group>"; };
 		745FD2191B1F215C00DBC5CC /* BookListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BookListTableViewCell.h; sourceTree = "<group>"; };
 		745FD21A1B1F215C00DBC5CC /* BookListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BookListTableViewCell.m; sourceTree = "<group>"; };
 		746FB4A11B5D6D2F0002686A /* MyStarBooksTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyStarBooksTableViewController.h; sourceTree = "<group>"; };
@@ -141,6 +144,8 @@
 				74AFBC4A1B68EFFA00D29EF9 /* RecommendationTableViewController.m */,
 				741FF7DF1B72677500B85697 /* LoginViewController.h */,
 				741FF7E01B72677500B85697 /* LoginViewController.m */,
+				745E5D321B7F2FF800249A0D /* SettingsTableViewController.h */,
+				745E5D331B7F2FF800249A0D /* SettingsTableViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -380,6 +385,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				745E5D341B7F2FF800249A0D /* SettingsTableViewController.m in Sources */,
 				7452426F1B10CF14005BE8CD /* AppDelegate.m in Sources */,
 				74D0E1711B6FCA9000592540 /* BorrowedBooksViewController.m in Sources */,
 				741FF7E11B72677500B85697 /* LoginViewController.m in Sources */,

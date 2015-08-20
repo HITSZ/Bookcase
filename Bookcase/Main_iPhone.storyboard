@@ -375,7 +375,6 @@
         <!--设置-->
         <scene sceneID="JPi-KP-Y3M">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="VVn-Ua-tgr" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tableViewController hidesBottomBarWhenPushed="YES" id="IUC-1J-ubh" customClass="SettingsTableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="1nJ-cJ-kKF">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
@@ -423,6 +422,7 @@
                     <navigationItem key="navigationItem" title="设置" id="nw2-s8-9zO"/>
                     <nil key="simulatedBottomBarMetrics"/>
                 </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VVn-Ua-tgr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2160" y="950"/>
         </scene>

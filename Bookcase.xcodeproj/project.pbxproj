@@ -301,6 +301,7 @@
 				TargetAttributes = {
 					745242651B10CF14005BE8CD = {
 						CreatedOnToolsVersion = 6.3.2;
+						DevelopmentTeam = 95BC6VVXL8;
 					};
 					745242811B10CF14005BE8CD = {
 						CreatedOnToolsVersion = 6.3.2;
@@ -522,10 +523,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Ching-Hua Hung (5TF22N2769)";
+				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Developer: Ching-Hua Hung (5TF22N2769)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Ching-Hua Hung (5TF22N2769)";
 				INFOPLIST_FILE = Bookcase/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -535,10 +540,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Ching-Hua Hung (5TF22N2769)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Ching-Hua Hung (5TF22N2769)";
 				INFOPLIST_FILE = Bookcase/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};

@@ -25,10 +25,6 @@
     _username.text = [LoginManager sharedManager].username;
 }
 
-- (void)viewDidDisappear:(BOOL)animated {
-    NSLog(@"%@", self);
-}
-
 - (void)dealloc {
     NSLog(@"%@", self);
 }

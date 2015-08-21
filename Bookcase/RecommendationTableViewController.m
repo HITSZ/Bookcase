@@ -141,6 +141,7 @@ typedef NS_ENUM(NSInteger, RecommendedSubmissionStatus) {
         case RecommendedSubmissionStatusFail:
             msg = @"提交失败";
             type = TSMessageNotificationTypeMessage;
+            break;
         default:
             msg = @"信息填写有误";
             type = TSMessageNotificationTypeError;

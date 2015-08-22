@@ -142,10 +142,12 @@
                           NSArray* liSplitedText = [liText componentsSeparatedByString:@"："];
                           if ([liSplitedText[0] length] > 0 && [liSplitedText[1] length] > 0) {
                               [[bookDetail objectForKey:@"basic"] setObject:liSplitedText[1] forKey:liSplitedText[0]];
-                              [keys addObject:liSplitedText[0]];
-                              [[bookDetail objectForKey:@"basic"] setObject:[keys copy] forKey:@"keys"];
+                              if (![liSplitedText[0] isEqualToString:@"索书号"] && ![liSplitedText[0] isEqualToString:@"分类号"]) {
+                                  [keys addObject:liSplitedText[0]];
+                              }
                           }
                       }];
+                      [[bookDetail objectForKey:@"basic"] setObject:[keys copy] forKey:@"keys"];
 
                       // 馆藏情况
                       // 在馆
@@ -168,9 +170,9 @@
                                               @"div[%lu]//span[@class='title_1' and contains(span,'可外借馆藏')]/following-sibling::table[1]//tr[position()>1]",
                                               (unsigned long)(index + 1)];
                            [[node queryWithXPath:xpath] enumerateNodesUsingBlock:^(IGXMLNode* node, NSUInteger idx, BOOL* stop) {
-                               NSMutableArray* statusInfo = [NSMutableArray new]; // 三元组(条形码，馆藏状态，流通类别)
+                               NSMutableArray* statusInfo = [NSMutableArray new]; // 四元组(条形码，索书号，馆藏状态，流通类别)
                                [[node queryWithXPath:@"td"] enumerateNodesUsingBlock:^(IGXMLNode* node, NSUInteger idx, BOOL* stop) {
-                                   if (idx == 0 || idx == 3 || idx == 5) {
+                                   if (idx == 0 || idx == 1 || idx == 3 || idx == 5) {
                                        [statusInfo addObject:[node text]];
                                    }
                                }];
@@ -182,9 +184,9 @@
                       [status removeAllObjects];
                       [[html queryWithXPath:@"//div[@class='tab_4_show' and div[contains(span,'已借出馆藏')]]//tr[contains(.,'深圳大学城图书馆')]"]
                        enumerateNodesUsingBlock:^(IGXMLNode* node, NSUInteger idx, BOOL* stop) {
-                           NSMutableArray* statusInfo = [NSMutableArray new]; // 二元组(条形码，借还日期)
+                           NSMutableArray* statusInfo = [NSMutableArray new]; // 三元组(条形码，索书号，借还日期)
                            [[node queryWithXPath:@"td"] enumerateNodesUsingBlock:^(IGXMLNode* node, NSUInteger idx, BOOL* stop) {
-                               if (idx == 0 || idx == 5) {
+                               if (idx == 0 || idx == 1 || idx == 5) {
                                    [statusInfo addObject:[node text]];
                                }
                            }];

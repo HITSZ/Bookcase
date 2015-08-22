@@ -10,9 +10,11 @@
 
 @interface BookStatusTableViewCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *statusLabel;
+@property (weak, nonatomic) IBOutlet UILabel *barcodeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *otherLabel;
+@property (weak, nonatomic) IBOutlet UILabel *indexLabel;
 @property (weak, nonatomic) IBOutlet UILabel *barcodeInfoLabel;
 @property (weak, nonatomic) IBOutlet UILabel *otherInfoLabel;
-@property (weak, nonatomic) IBOutlet UILabel *otherLabel;
-@property (weak, nonatomic) IBOutlet UILabel *barcodeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *indexInfoLabel;
 
 @end

@@ -112,6 +112,13 @@ enum { BASIC_SECTION = 0,
     }
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == BASIC_SECTION) {
+        return UITableViewAutomaticDimension;
+    }
+    return tableView.rowHeight;
+}
+
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath {
     switch (indexPath.section) {
         case BASIC_SECTION: {
@@ -124,20 +131,21 @@ enum { BASIC_SECTION = 0,
             return cell;
         }
         case STATUS_SECTION: {
-            BookStatusTableViewCell* cell =
-            [tableView dequeueReusableCellWithIdentifier:@"bookStatusCell"];
+            BookStatusTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"bookStatusCell"];
             NSInteger inCount = [_bookDetail[@"status"][@"in"] count];
             if (indexPath.row < inCount) {
                 cell.barcodeInfoLabel.text = _bookDetail[@"status"][@"in"][indexPath.row][0];
-                cell.statusLabel.text = _bookDetail[@"status"][@"in"][indexPath.row][1];
-                cell.otherInfoLabel.text = _bookDetail[@"status"][@"in"][indexPath.row][2];
+                cell.indexInfoLabel.text = _bookDetail[@"status"][@"in"][indexPath.row][1];
+                cell.statusLabel.text = _bookDetail[@"status"][@"in"][indexPath.row][2];
+                cell.otherInfoLabel.text = _bookDetail[@"status"][@"in"][indexPath.row][3];
                 cell.otherLabel.text = @"流通类别";
             } else {
                 cell.barcodeInfoLabel.text = _bookDetail[@"status"][@"out"][indexPath.row - inCount][0];
-                cell.otherInfoLabel.text = _bookDetail[@"status"][@"out"][indexPath.row - inCount][1];
+                cell.indexInfoLabel.text = _bookDetail[@"status"][@"out"][indexPath.row - inCount][1];
+                cell.otherInfoLabel.text = _bookDetail[@"status"][@"out"][indexPath.row - inCount][2];
                 cell.statusLabel.text = @"借出";
                 cell.otherLabel.text = @"应还日期";
-                cell.barcodeLabel.textColor = cell.statusLabel.textColor = cell.otherLabel.textColor = [UIColor lightGrayColor];
+                cell.barcodeLabel.textColor = cell.statusLabel.textColor = cell.otherLabel.textColor = cell.indexLabel.textColor = [UIColor lightGrayColor];
             }
             return cell;
         }

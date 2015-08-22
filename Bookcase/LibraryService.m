@@ -167,7 +167,7 @@
                       [[html queryWithXPath:@"//div[@class='tab_4_title' and a[contains(@title,'深圳大学城图书馆(深圳市科技图书馆)')]]/following-sibling::div[1]"]
                        enumerateNodesUsingBlock:^(IGXMLNode* node, NSUInteger idx, BOOL* stop) {
                            NSString* xpath = [NSString stringWithFormat:
-                                              @"div[%lu]//span[@class='title_1' and contains(span,'可外借馆藏')]/following-sibling::table[1]//tr[position()>1]",
+                                              @"div[%lu]//span[@class='title_1' and contains(span,'馆藏')]/following-sibling::table[1]//tr[position()>1]",
                                               (unsigned long)(index + 1)];
                            [[node queryWithXPath:xpath] enumerateNodesUsingBlock:^(IGXMLNode* node, NSUInteger idx, BOOL* stop) {
                                NSMutableArray* statusInfo = [NSMutableArray new]; // 四元组(条形码，索书号，馆藏状态，流通类别)

@@ -62,8 +62,29 @@ enum { BASIC_SECTION = 0,
     STATUS_SECTION };
 
 #pragma mark - Table view delegate
+
 - (CGFloat)tableView:(UITableView*)tableView heightForHeaderInSection:(NSInteger)section {
     return section == BASIC_SECTION ? 10 : UITableViewAutomaticDimension;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == BASIC_SECTION) {
+        NSString *item = _bookDetail[@"basic"][@"keys"][indexPath.row];
+        NSString *itemContent = _bookDetail[@"basic"][item];
+        CGFloat itemLabelWidth = [item sizeWithAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:17.0]}].width;
+
+        // 36 = |15-textLabel-6-detailTextLabel-15|
+        CGRect rect = [itemContent boundingRectWithSize:CGSizeMake(tableView.frame.size.width - (itemLabelWidth + 36), FLT_MAX)
+                                         options:NSStringDrawingUsesLineFragmentOrigin
+                                      attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:17.0]}
+                                         context:nil];
+        return rect.size.height + 20;
+    }
+    return tableView.rowHeight;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 44;
 }
 
 #pragma mark - Table view data source
@@ -112,19 +133,13 @@ enum { BASIC_SECTION = 0,
     }
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == BASIC_SECTION) {
-        return UITableViewAutomaticDimension;
-    }
-    return tableView.rowHeight;
-}
-
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath {
     switch (indexPath.section) {
         case BASIC_SECTION: {
             UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"bookBasicDetailCell"];
             if (cell == nil) {
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"bookBasicDetailCell"];
+                [cell.detailTextLabel setNumberOfLines:0];
             }
             cell.textLabel.text = _bookDetail[@"basic"][@"keys"][indexPath.row];
             cell.detailTextLabel.text = _bookDetail[@"basic"][cell.textLabel.text];

@@ -41,7 +41,7 @@
         if ([MFMailComposeViewController canSendMail]) {
             MFMailComposeViewController *mailCompose = [MFMailComposeViewController new];
             mailCompose.mailComposeDelegate = self;
-            [mailCompose setSubject:@"图书馆iOS客户端反馈"];
+            [mailCompose setSubject:@"大学城图书馆iOS客户端反馈"];
             [mailCompose setToRecipients:@[ @"xohozu@gmail.com" ]];
             [self presentViewController:mailCompose animated:YES completion:nil];
         }

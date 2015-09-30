@@ -92,7 +92,7 @@ enum { BASIC_SECTION = 0,
             NSUInteger left = [_bookDetail[@"status"][@"in"] count];
             NSUInteger total = left + [_bookDetail[@"status"][@"out"] count];
             if (total) {
-                return [NSString stringWithFormat:@"馆藏 %lu/%lu", (unsigned long)left, (unsigned long)total];
+                return [NSString stringWithFormat:@"馆藏 [%lu/%lu]", (unsigned long)left, (unsigned long)total];
             }
             return nil;
         }

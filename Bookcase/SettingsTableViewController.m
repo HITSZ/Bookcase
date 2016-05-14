@@ -10,6 +10,7 @@
 #import "LoginManager.h"
 #import "TSMessage.h"
 #import <MessageUI/MessageUI.h>
+#import <LeanCloudFeedback/LeanCloudFeedback.h>
 
 @interface SettingsTableViewController () <UIAlertViewDelegate, MFMailComposeViewControllerDelegate>
 
@@ -38,13 +39,9 @@
                                               otherButtonTitles:@"确定", nil];
         [alert show];
     } else if (indexPath.section == 0 && indexPath.row == 0) {
-        if ([MFMailComposeViewController canSendMail]) {
-            MFMailComposeViewController *mailCompose = [MFMailComposeViewController new];
-            mailCompose.mailComposeDelegate = self;
-            [mailCompose setSubject:@"大学城图书馆iOS客户端反馈"];
-            [mailCompose setToRecipients:@[ @"xohozu@gmail.com" ]];
-            [self presentViewController:mailCompose animated:YES completion:nil];
-        }
+        LCUserFeedbackAgent *agent = [LCUserFeedbackAgent sharedInstance];
+        /* title 传 nil 表示将第一条消息作为反馈的标题。 contact 也可以传入 nil，由用户来填写联系方式。*/
+        [agent showConversations:self title:nil contact:nil];
     }
 }
 

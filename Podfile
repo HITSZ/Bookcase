@@ -10,6 +10,7 @@ pod 'Colours'
 pod 'TSMessages'
 
 pod 'AVOSCloudCrashReporting'
+pod 'LeanCloudFeedback'
 
 end
 

@@ -15,7 +15,7 @@
 #import "TSMessages/TSMessage.h"
 
 static NSString* const kStarImageName = @"Star";
-static NSString* const kStarFilledImageName = @"Star Filled";
+static NSString* const kStarFilledImageName = @"Star-Filled";
 
 @interface BookDetailTableViewController ()
 

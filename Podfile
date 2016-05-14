@@ -9,6 +9,8 @@ pod 'IGHTMLQuery', '~> 0.8.4'
 pod 'Colours'
 pod 'TSMessages'
 
+pod 'AVOSCloudCrashReporting'
+
 end
 
 target 'BookcaseTests' do

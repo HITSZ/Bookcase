@@ -10,6 +10,7 @@
 
 #import "AFNetworkActivityIndicatorManager.h"
 #import "AVOSCloud/AVOSCloud.h"
+#import "AVOSCloudCrashReporting/AVOSCloudCrashReporting.h"
 
 @interface AppDelegate ()
 
@@ -23,6 +24,7 @@
     self.window.backgroundColor = [UIColor whiteColor];
     [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
 
+    [AVOSCloudCrashReporting enable];
     [AVOSCloud setApplicationId:kLeanCloudAppID clientKey:kLeanCloudAppKey];
     [AVAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
     return YES;

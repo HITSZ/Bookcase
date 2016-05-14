@@ -265,6 +265,7 @@
 				745242641B10CF14005BE8CD /* Resources */,
 				12AF71E198ECD133E84E65FC /* Copy Pods Resources */,
 				2C2CECDCECE4618D443B9032 /* Embed Pods Frameworks */,
+				168286481CE7819D006EA561 /* Run Script */,
 			);
 			buildRules = (
 			);
@@ -304,7 +305,6 @@
 				TargetAttributes = {
 					745242651B10CF14005BE8CD = {
 						CreatedOnToolsVersion = 6.3.2;
-						DevelopmentTeam = 4C694D73T4;
 					};
 					745242811B10CF14005BE8CD = {
 						CreatedOnToolsVersion = 6.3.2;
@@ -366,6 +366,20 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Bookcase/Pods-Bookcase-resources.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		168286481CE7819D006EA561 /* Run Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Run Script";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "leancloud upload_symbol \\\n-f \"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}\" \\\n-i \"k5v26ACB43xBkLRbxEP7Mqcb-gzGzoHsz\" \\\n-k \"geNWSYB3xzlyPkFH2QVq3fze\"\n";
 		};
 		2C2CECDCECE4618D443B9032 /* Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -542,9 +556,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: 清华 洪 (ZK5498U4ZR)";
-				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Developer: 清华 洪 (ZK5498U4ZR)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: 清华 洪 (ZK5498U4ZR)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Bookcase/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -560,8 +574,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: 清华 洪 (ZK5498U4ZR)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: 清华 洪 (ZK5498U4ZR)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = Bookcase/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

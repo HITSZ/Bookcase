@@ -9,6 +9,7 @@
 #import "MyStarBooksTableViewController.h"
 #import "MyStarBooks.h"
 #import "BookDetailTableViewController.h"
+#import "AVOSCloud/AVAnalytics.h"
 
 extern NSString *const MyStarBooksDidUpdateNotification;
 
@@ -27,6 +28,17 @@ extern NSString *const MyStarBooksDidUpdateNotification;
                                              selector:@selector(reloadData)
                                                  name:MyStarBooksDidUpdateNotification
                                                object:nil];
+}
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [AVAnalytics beginLogPageView:self.navigationItem.title];
+}
+
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [AVAnalytics endLogPageView:self.navigationItem.title];
 }
 
 - (void)reloadData {

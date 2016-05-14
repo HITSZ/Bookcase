@@ -10,6 +10,7 @@
 #import "SVProgressHUD.h"
 #import "UIImageView+AFNetworking.h"
 #import "TSMessages/TSMessage.h"
+#import "AVOSCloud/AVAnalytics.h"
 
 #import "LibraryService.h"
 
@@ -54,9 +55,16 @@ typedef NS_ENUM(NSInteger, RecommendedSubmissionStatus) {
     [self refreshCaptcha];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [AVAnalytics beginLogPageView:self.navigationItem.title];
+}
+
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [AVAnalytics endLogPageView:self.navigationItem.title];
 }
 
 - (void)dealloc {

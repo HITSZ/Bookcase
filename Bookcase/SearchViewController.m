@@ -10,6 +10,7 @@
 #import "LibraryService.h"
 #import "BookListTableViewCell.h"
 #import "BookDetailTableViewController.h"
+#import "AVOSCloud/AVAnalytics.h"
 
 #import "SVProgressHUD.h"
 
@@ -232,6 +233,7 @@
 - (void)doSearchWithKey:(NSString*)key {
     [_searchResults removeAllObjects];  // 搜索前清空结果列表
     if ([key length]) {
+        [AVAnalytics event:[NSString stringWithFormat:@"search"] label:key];
         [SVProgressHUD showWithStatus:@"正在搜索..." maskType:SVProgressHUDMaskTypeBlack];
         [_searchBar resignFirstResponder];
         [LibraryService searchBookByIndex:@"all"

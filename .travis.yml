@@ -1,5 +1,5 @@
 before_script:
-    - gem install cocoapods -v '0.37.2'
+    - gem install cocoapods
 language: objective-c
 xcode_workspace: Bookcase.xcworkspace
 xcode_scheme: Bookcase

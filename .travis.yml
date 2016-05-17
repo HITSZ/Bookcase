@@ -1,4 +1,4 @@
-before_script:
+before_install:
     - sudo gem install cocoapods -v 0.39.0
 language: objective-c
 xcode_workspace: Bookcase.xcworkspace
